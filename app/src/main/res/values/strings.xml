@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TV Shows Base</string>
+    <string name="sign_in_text">Sing in to yout TMDb account</string>
+    <string name="login_text">Login</string>
 </resources>
