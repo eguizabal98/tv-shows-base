@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface AuthAPI {
 
-    @GET(value = "authentication/token/new?")
+    @GET(value = "authentication/token/new")
     suspend fun getAuthToken(@Query("api_key") apiKey: String): TokenResponse
 
     @POST(value = "authentication/session/new")

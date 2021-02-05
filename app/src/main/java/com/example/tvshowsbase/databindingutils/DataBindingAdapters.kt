@@ -4,10 +4,10 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("app:visibleOrGone")
-fun visibleOrGone(view: View, state: Boolean) {
-    if (state) {
-        view.visibility = View.VISIBLE
+fun View.visibleOrGone(state: Boolean) {
+    visibility = if (state) {
+        View.VISIBLE
     } else {
-        view.visibility = View.GONE
+        View.GONE
     }
 }

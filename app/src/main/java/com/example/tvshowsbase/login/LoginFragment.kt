@@ -12,6 +12,7 @@ import android.webkit.WebViewClient
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.WorkState
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.LoginFragmentBinding
@@ -47,6 +48,7 @@ class LoginFragment : Fragment() {
         sharedPreferences.let {
             if (it.getString("sessionId", "")?.isNotEmpty() == true) {
                 showSnackBar("Navigation")
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
             }
         }
     }
@@ -94,7 +96,7 @@ class LoginFragment : Fragment() {
                         putString("sessionId", response.value)
                         apply()
                     }
-
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
                 }
                 is WorkState.Failure -> {
                     stopProgressBar()

@@ -9,5 +9,14 @@
         android:id="@+id/loginFragment"
         android:name="com.example.tvshowsbase.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" />
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_tvShowsFragment"
+            app:destination="@id/tvShowsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tvShowsFragment"
+        android:name="com.example.tvshowsbase.showslist.TvShowsFragment"
+        android:label="tv_shows_fragment"
+        tools:layout="@layout/tv_shows_fragment" />
 </navigation>
