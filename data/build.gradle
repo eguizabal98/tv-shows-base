@@ -9,13 +9,22 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+            annotationProcessorOptions {
+                arguments = ["room.incremental": "true"]
+            }
+        }
     }
 
     buildTypes {
@@ -57,4 +66,11 @@ dependencies {
     //koin
     implementation "org.koin:koin-core:2.1.6"
     implementation "org.koin:koin-android:2.1.6"
+
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:2.1.2"
+
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
 }
