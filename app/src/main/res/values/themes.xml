@@ -2,16 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.TVShowsBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/dark</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/black_var</item>
+        <item name="colorPrimaryVariant">@color/gray_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColor">@color/dark</item>
+        <item name="android:textColor">@color/black_var</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/red_light</item>
         <item name="colorSecondaryVariant">@color/red_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/light</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/light_cream</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/red_dark</item>
     </style>
 </resources>

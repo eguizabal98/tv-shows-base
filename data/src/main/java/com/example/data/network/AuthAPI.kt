@@ -1,13 +1,13 @@
 package com.example.data.network
 
-import com.example.data.network.requestModels.SessionIdResponse
-import com.example.data.network.requestModels.SessionRequestBody
-import com.example.data.network.requestModels.TokenResponse
+import com.example.data.datamodels.network.SessionIdResponse
+import com.example.data.datamodels.network.SessionRequestBody
+import com.example.data.datamodels.network.TokenResponse
 import retrofit2.http.*
 
-interface NetworkAPI {
+interface AuthAPI {
 
-    @GET(value = "authentication/token/new?")
+    @GET(value = "authentication/token/new")
     suspend fun getAuthToken(@Query("api_key") apiKey: String): TokenResponse
 
     @POST(value = "authentication/session/new")

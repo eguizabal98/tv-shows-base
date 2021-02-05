@@ -24,8 +24,8 @@ class LoginViewModel(
     var tokenTemp = ""
 
     fun getAuthToken(api: String) {
+        _authTokenState.value = WorkState.Loading
         viewModelScope.launch {
-            _authTokenState.postValue(WorkState.Loading)
             when (val response = getAuthTokenUseCase.getAuthToken(api)) {
                 is NetworkResult.Success -> {
                     _authTokenState.postValue(WorkState.Success(response.value))
@@ -38,8 +38,8 @@ class LoginViewModel(
     }
 
     fun getSessionId(api: String, token: String) {
+        _sessionIdState.value = WorkState.Loading
         viewModelScope.launch {
-            _sessionIdState.postValue(WorkState.Loading)
             when (val response = getSessionIdUseCase.getSessionId(api, token)) {
                 is NetworkResult.Success -> {
                     _sessionIdState.postValue(WorkState.Success(response.value))

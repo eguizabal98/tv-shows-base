@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">TV Shows Base</string>
-    <string name="sign_in_text">Sing in to yout TMDb account</string>
+    <string name="sign_in_text">Sing in to your TMDb account</string>
     <string name="login_text">Login</string>
+    <string name="tv_show_poster">TV Show Poster</string>
+    <string name="view_profile">View Profile</string>
+    <string name="log_out">Log Out</string>
+    <string name="filter_by">Filter by:</string>
+    <string name="filter_icon">Filter Icon</string>
+    <string name="public_score">Public score</string>
+    <string name="TV_Shows_Fragment_Title">TV Shows</string>
+
+    <string-array name="showsFilter">
+        <item>Popular</item>
+        <item>Top Rated</item>
+        <item>On TV</item>
+        <item>Airing Today</item>
+    </string-array>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.example.tvshowsbase
 
 import android.app.Application
+import com.example.data.di.dataBaseModule
 import com.example.data.di.networkingModule
 import com.example.data.di.repositoryModule
 import com.example.domain.di.interactsModule
@@ -25,4 +26,4 @@ class TvShowsApp : Application() {
 
 val appModules = listOf(presenterModule)
 val domainModules = listOf(interactsModule)
-val dataModules = listOf(networkingModule, repositoryModule)
+val dataModules = listOf(networkingModule, repositoryModule, dataBaseModule)

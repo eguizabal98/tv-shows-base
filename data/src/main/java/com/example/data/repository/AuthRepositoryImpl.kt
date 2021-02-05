@@ -1,9 +1,9 @@
 package com.example.data.repository
 
-import com.example.data.network.NetworkAPI
+import com.example.data.network.AuthAPI
 import com.example.data.network.networkError
 import com.example.data.network.noNetworkAccess
-import com.example.data.network.requestModels.SessionRequestBody
+import com.example.data.datamodels.network.SessionRequestBody
 import com.example.data.util.Connectivity
 import com.example.domain.model.NetworkResult
 import com.example.domain.repository.AuthRepository
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class AuthRepositoryImpl(
-    private val networkAPI: NetworkAPI,
+    private val authAPI: AuthAPI,
     private val connectivity: Connectivity
 ) : AuthRepository {
 
@@ -20,7 +20,7 @@ class AuthRepositoryImpl(
         return withContext(Dispatchers.IO) {
             try {
                 if (connectivity.hasNetworkAccess()) {
-                    val response = networkAPI.getAuthToken(apiKey)
+                    val response = authAPI.getAuthToken(apiKey)
                     NetworkResult.Success(response.requestToken)
                 } else {
                     NetworkResult.Failure(noNetworkAccess, Throwable())
@@ -46,7 +46,7 @@ class AuthRepositoryImpl(
             try {
                 if (connectivity.hasNetworkAccess()) {
                     val response =
-                        networkAPI.getSessionId(apiKey, SessionRequestBody(token)).sessionId
+                        authAPI.getSessionId(apiKey, SessionRequestBody(token)).sessionId
                     NetworkResult.Success(response)
                 } else {
                     NetworkResult.Failure(noNetworkAccess, Throwable())
