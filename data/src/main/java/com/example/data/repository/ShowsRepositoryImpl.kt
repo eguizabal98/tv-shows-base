@@ -6,7 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.data.database.DataBase
 import com.example.data.paging.ItemBoundaryCallBack
-import com.example.data.util.mapToModel
+import com.example.data.util.mapToShowDomain
 import com.example.domain.model.FilterType
 import com.example.domain.model.TvShow
 import com.example.domain.repository.ShowsRepository
@@ -27,7 +27,7 @@ class ShowsRepositoryImpl(
 
     override fun getPopularShows(filterType: FilterType): LiveData<PagedList<TvShow>> {
         val factory: DataSource.Factory<Int, TvShow> =
-            dataBase.tvShowDao().getPopularShows().mapByPage { it.mapToModel() }
+            dataBase.tvShowDao().getPopularShows().mapByPage { it.mapToShowDomain() }
 
         return LivePagedListBuilder(factory, config).setBoundaryCallback(itemBoundaryCallBack)
             .build()
