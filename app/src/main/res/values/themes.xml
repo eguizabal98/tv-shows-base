@@ -18,4 +18,9 @@
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorPrimary">@color/red_dark</item>
     </style>
+
+    <style name="SplashScreenTheme" parent="Theme.TVShowsBase">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    </style>
+
 </resources>

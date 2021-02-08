@@ -1,6 +1,6 @@
-package com.example.data.network
+package com.example.data.network.api
 
-import com.example.data.datamodels.network.TvShowsResult
+import com.example.data.network.models.showslist.TvShowsResult
 import com.example.data.di.API_KEY
 import com.example.data.di.LANGUAGE
 import retrofit2.http.GET

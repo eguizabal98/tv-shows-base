@@ -14,17 +14,15 @@ fun ImageView.setImageUrl(Url: String?) {
         centerRadius = 30f
         start()
     }
-    Url?.let { it ->
-        Glide.with(this.context)
-            .load(it)
-            .fitCenter()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(placeholder)
-            .error(
-                Glide.with(this.context).load(it).placeholder(placeholder)
-                    .error(R.drawable.ic_baseline_account_circle_24)
-            )
-            .into(this)
-    }
+    GlideApp.with(this.context)
+        .load(Url)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .placeholder(placeholder)
+        .error(
+            Glide.with(this.context).load(Url).placeholder(placeholder)
+                .error(R.drawable.ic_baseline_account_circle_24)
+        )
+        .into(this)
 
 }

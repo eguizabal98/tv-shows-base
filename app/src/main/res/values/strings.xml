@@ -9,6 +9,15 @@
     <string name="filter_icon">Filter Icon</string>
     <string name="public_score">Public score</string>
     <string name="TV_Shows_Fragment_Title">TV Shows</string>
+    <string name="summary">Summary</string>
+    <string name="favorite_bottom">Favorite Bottom</string>
+    <string name="background_show_image">Background show image</string>
+    <string name="created_by">Created by:</string>
+    <string name="view_all_seasons">View All\nSeasons</string>
+    <string name="poster_show_image">Poster Show Image</string>
+    <string name="cast">Cast</string>
+    <string name="cast_info">Cast Info Image</string>
+    <string name="last_season">Last Season</string>
 
     <string-array name="showsFilter">
         <item>Popular</item>

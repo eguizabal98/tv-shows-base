@@ -9,14 +9,29 @@
         android:id="@+id/loginFragment"
         android:name="com.example.tvshowsbase.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" >
+        tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_tvShowsFragment"
-            app:destination="@id/tvShowsFragment" />
+            app:destination="@id/tvShowsFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/tvShowsFragment"
         android:name="com.example.tvshowsbase.showslist.TvShowsFragment"
         android:label="tv_shows_fragment"
-        tools:layout="@layout/tv_shows_fragment" />
+        tools:layout="@layout/tv_shows_fragment" >
+        <action
+            android:id="@+id/action_tvShowsFragment_to_showDetailFragment"
+            app:destination="@id/showDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showDetailFragment"
+        android:name="com.example.tvshowsbase.details.ShowDetailFragment"
+        android:label="ShowDetailFragment"
+        tools:layout="@layout/show_detail_fragment" >
+        <argument
+            android:name="showId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

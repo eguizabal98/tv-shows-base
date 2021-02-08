@@ -1,4 +1,4 @@
-package com.example.data.datamodels.network
+package com.example.data.network.models.showslist
 
 import com.example.data.database.entities.TVShowEntity
 import com.google.gson.annotations.SerializedName

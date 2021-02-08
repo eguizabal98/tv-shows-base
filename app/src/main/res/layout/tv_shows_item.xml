@@ -2,7 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tool="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -40,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tool:src="@tools:sample/backgrounds/scenic" />
+                tools:src="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/tv_show_name"
@@ -54,7 +54,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_show_airtime"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_image"
-                tool:text="Rick and Morty" />
+                tools:text="Rick and Morty" />
 
             <TextView
                 android:id="@+id/tv_show_airtime"
@@ -68,7 +68,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_name"
-                tool:text="Aug 10,2015" />
+                tools:text="Aug 10,2015" />
 
             <TextView
                 android:id="@+id/tv_description"
@@ -85,7 +85,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_airtime"
-                tool:text="An animated series on adult-swim about the infinite adventures of Rick, a genius alcoholic and careless scientist, with his grandson Morty, a 14 year-old anxious boy who is not so smart. Together, they explore the infinite universes; causing mayhem and running into trouble." />
+                tools:text="An animated series on adult-swim about the infinite adventures of Rick, a genius alcoholic and careless scientist, with his grandson Morty, a 14 year-old anxious boy who is not so smart. Together, they explore the infinite universes; causing mayhem and running into trouble." />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -109,7 +109,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_show_airtime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_show_airtime"
-                tool:text="7.1" />
+                tools:text="7.1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

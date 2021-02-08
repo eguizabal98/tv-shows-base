@@ -34,7 +34,6 @@ class LoginFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-
         return binding.root
     }
 
@@ -45,12 +44,7 @@ class LoginFragment : Fragment() {
         createViewModelObservers()
         createBindingFragmentObservers()
 
-        sharedPreferences.let {
-            if (it.getString("sessionId", "")?.isNotEmpty() == true) {
-                showSnackBar("Navigation")
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
-            }
-        }
+        checkCredentials()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -61,7 +55,7 @@ class LoginFragment : Fragment() {
 
     private fun createBindingFragmentObservers() {
         binding.loginButton.setOnClickListener {
-            viewModel.getAuthToken(getString(R.string.apiKey))
+            viewModel.getAuthToken()
         }
     }
 
@@ -93,10 +87,32 @@ class LoginFragment : Fragment() {
                     Log.d("LoginFragment", "Session ID: ${response.value}")
 
                     sharedPreferences.edit {
-                        putString("sessionId", response.value)
+                        putString(SESSION_KEY, response.value)
                         apply()
                     }
-                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
+                    checkCredentials()
+                }
+                is WorkState.Failure -> {
+                    stopProgressBar()
+                    showSnackBar(response.message)
+                }
+            }
+        })
+
+        viewModel.accountIdState.observe(viewLifecycleOwner, { response ->
+            when (response) {
+                WorkState.Loading -> {
+                    starProgressBar()
+                }
+                is WorkState.Success -> {
+                    stopProgressBar()
+                    Log.d("LoginFragment", "Account ID: ${response.value}")
+
+                    sharedPreferences.edit {
+                        putInt(ACCOUNT_KEY, response.value)
+                        apply()
+                    }
+                    checkCredentials()
                 }
                 is WorkState.Failure -> {
                     stopProgressBar()
@@ -116,8 +132,23 @@ class LoginFragment : Fragment() {
         override fun onPageFinished(view: WebView?, url: String) {
             super.onPageFinished(view, url)
             if (url.contains(ALLOW_CHECK)) {
-                viewModel.getSessionId(getString(R.string.apiKey), viewModel.tokenTemp)
+                viewModel.getSessionId(viewModel.tokenTemp)
             }
+        }
+    }
+
+    private fun checkCredentials() {
+        val session = sharedPreferences.getString(SESSION_KEY, "")
+        val account = sharedPreferences.getInt(ACCOUNT_KEY, 0)
+
+        if (session?.isNotEmpty() == true) {
+            Log.d("Login", "else")
+            viewModel.getAccountId(session)
+        }
+
+        if (session != "" && account != 0) {
+            Log.d("Login", "check2")
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
         }
     }
 
@@ -143,5 +174,7 @@ class LoginFragment : Fragment() {
     companion object {
         const val ALLOW_CHECK = "/allow"
         const val WEB_VIEW_URL = "https://www.themoviedb.org/authenticate/"
+        const val SESSION_KEY = "sessionId"
+        const val ACCOUNT_KEY = "accountId"
     }
 }

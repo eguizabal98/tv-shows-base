@@ -8,14 +8,17 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
+const val DB_NAME = "TvShowsDb"
+
 val dataBaseModule = module {
     single {
-        Room.databaseBuilder(androidContext(), DataBase::class.java, "TvShowsDb")
+        Room.databaseBuilder(androidContext(), DataBase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
     factory { get<DataBase>().tvShowDao() }
-    factory { get<DataBase>().remotePageDao() }
+    factory { get<DataBase>().favoriteShowDao() }
+
     single {
         ItemBoundaryCallBack(tvShowsAPI = get(), dataBase = get(), scope = get())
     }
