@@ -1,4 +1,4 @@
-package com.example.data.networkmodels.authentication
+package com.example.data.network.models.authentication
 
 import com.google.gson.annotations.SerializedName
 
