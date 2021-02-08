@@ -1,8 +1,8 @@
-package com.example.data.network
+package com.example.data.network.API
 
-import com.example.data.datamodels.network.SessionIdResponse
-import com.example.data.datamodels.network.SessionRequestBody
-import com.example.data.datamodels.network.TokenResponse
+import com.example.data.networkmodels.authentication.SessionIdResponse
+import com.example.data.networkmodels.authentication.SessionRequestBody
+import com.example.data.networkmodels.authentication.TokenResponse
 import retrofit2.http.*
 
 interface AuthAPI {
