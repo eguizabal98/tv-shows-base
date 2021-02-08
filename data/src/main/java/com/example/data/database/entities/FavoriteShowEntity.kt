@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "tvShows_table")
-data class TVShowEntity(
+@Entity(tableName = "favorites_table")
+data class FavoriteShowEntity(
     @SerializedName("id") val tvShowId: Int,
     @PrimaryKey @SerializedName("name") val name: String,
     @SerializedName("vote_average") val score: Double,
