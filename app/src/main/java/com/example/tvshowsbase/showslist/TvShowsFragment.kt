@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.data.paging.ItemBoundaryCallBack
 import com.example.domain.model.FilterType
 import com.example.domain.model.TvShow
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.TvShowsFragmentBinding
+import com.example.tvshowsbase.login.LoginFragment.Companion.ACCOUNT_KEY
+import com.example.tvshowsbase.login.LoginFragment.Companion.SESSION_KEY
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,6 +45,22 @@ class TvShowsFragment : Fragment(),
         binding.tvShowsRecycler.adapter = tvShowsAdapter
 
         val lastFilterPosition = sharedPreferences.getInt("filter", 0)
+
+        when (lastFilterPosition) {
+            0 -> {
+                itemBoundaryCallBack.setInitialFilter(FilterType.POPULAR)
+            }
+            1 -> {
+                itemBoundaryCallBack.setInitialFilter(FilterType.TOP_RATE)
+            }
+            2 -> {
+                itemBoundaryCallBack.setInitialFilter(FilterType.ON_AIR)
+            }
+            3 -> {
+                itemBoundaryCallBack.setInitialFilter(FilterType.AIRING_TODAY)
+            }
+        }
+
         binding.filterSpinner.setSelection(lastFilterPosition)
 
         return binding.root
@@ -56,7 +75,9 @@ class TvShowsFragment : Fragment(),
         super.onActivityCreated(savedInstanceState)
         createViewModelObservers()
         createBindingObservers()
-
+        val accountId = sharedPreferences.getInt(ACCOUNT_KEY, 0)
+        val sessionId = sharedPreferences.getString(SESSION_KEY, "").toString()
+        viewModel.getFavorites(accountId, sessionId, 1)
     }
 
     private fun createBindingObservers() {
@@ -100,6 +121,11 @@ class TvShowsFragment : Fragment(),
 
     override fun onItemClicked(tvShow: TvShow) {
         showSnackBar(tvShow.name)
+        findNavController().navigate(
+            TvShowsFragmentDirections.actionTvShowsFragmentToShowDetailFragment(
+                tvShow.showId
+            )
+        )
     }
 
     private fun showSnackBar(message: String) {
