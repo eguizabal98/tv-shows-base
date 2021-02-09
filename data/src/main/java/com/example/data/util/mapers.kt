@@ -4,10 +4,9 @@ import com.example.data.database.entities.FavoriteShowEntity
 import com.example.data.database.entities.ShowDetailEntity
 import com.example.data.database.entities.TVShowEntity
 import com.example.data.network.models.showsdetail.CastResponse
-import com.example.domain.model.Cast
-import com.example.domain.model.Season
-import com.example.domain.model.ShowDetails
-import com.example.domain.model.TvShow
+import com.example.data.network.models.showsdetail.EpisodeResponse
+import com.example.data.network.models.showsdetail.SeasonResponse
+import com.example.domain.model.*
 
 const val NOT_AVAILABLE = "Not Available"
 
@@ -50,7 +49,8 @@ fun ShowDetailEntity.mapToShowDetailsDomain(): ShowDetails =
             seasons.last().airDate ?: NOT_AVAILABLE,
             seasons.last().name ?: NOT_AVAILABLE,
             completeUrl(seasons.last().posterPath),
-            seasons.last().seasonNumber
+            seasons.last().seasonNumber,
+            null
         ),
         description ?: NOT_AVAILABLE,
         completeUrl(posterPath),
@@ -69,3 +69,21 @@ fun List<FavoriteShowEntity>.mapFavoriteToShowDomain(): List<TvShow> = map {
         it.page
     )
 }
+
+fun SeasonResponse.mapSeasonToSeasonDomain(): Season =
+    Season(
+        airDate ?: "",
+        name ?: "",
+        completeUrl(posterPath),
+        seasonNumber,
+        episodes?.mapEpisodeToEpisodeDomain()
+    )
+
+fun EpisodeResponse.mapToDomain() = Episode(
+    id,
+    airDate ?: "",
+    name ?: "",
+    completeUrl(stillPath)
+)
+
+fun List<EpisodeResponse>.mapEpisodeToEpisodeDomain() = map { it.mapToDomain() }

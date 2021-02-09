@@ -1,27 +1,28 @@
 package com.example.data.network.models.showsdetail
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
+
 data class CreatorResponse(
-    @PrimaryKey @SerializedName("id") val creatorId: Int = 0,
+    @SerializedName("id") val creatorId: Int = 0,
     @SerializedName("name") val name: String? = null,
     @SerializedName("profile_path") val profileImage: String? = null
 )
 
-@Entity
 data class EpisodeResponse(
-    @PrimaryKey @SerializedName("air_date") val airDate: String? = null
+    @SerializedName("id") val id: Int,
+    @SerializedName("air_date") val airDate: String? = null,
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("still_path") val stillPath: String? = null
 )
 
-@Entity
 data class SeasonResponse(
-    @PrimaryKey @SerializedName("air_date") val airDate: String? = null,
+    @SerializedName("air_date") val airDate: String? = null,
     @SerializedName("name") val name: String? = null,
     @SerializedName("poster_path") val posterPath: String? = null,
-    @SerializedName("season_number") val seasonNumber: Int = 0
+    @SerializedName("season_number") val seasonNumber: Int = 0,
+    @SerializedName("episodes") val episodes: List<EpisodeResponse>? = null
 )
+
 
 
