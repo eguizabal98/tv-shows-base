@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.domain.model.NetworkResult
 import com.example.tvshowsbase.R
@@ -55,6 +56,19 @@ class ShowDetailFragment : Fragment() {
             val sessionId = sharedPreferences.getString(SESSION_KEY, "").toString()
             val accountId = sharedPreferences.getInt(ACCOUNT_KEY, 0)
             viewModel.putFavorite(sessionId, accountId)
+        }
+
+        binding.allSeasonButton.setOnClickListener {
+            val showId: Int? = viewModel.details.value?.showId
+            val seasons: Int? = viewModel.details.value?.lastSeason?.seasonNumber
+            if (showId != null && seasons != null) {
+                findNavController().navigate(
+                    ShowDetailFragmentDirections.actionShowDetailFragmentToSeasonsFragment(
+                        showId,
+                        seasons
+                    )
+                )
+            }
         }
 
         viewModel.favoriteResult.observe(viewLifecycleOwner, {
