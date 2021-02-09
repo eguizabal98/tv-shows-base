@@ -33,5 +33,20 @@
         <argument
             android:name="showId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_showDetailFragment_to_seasonsFragment"
+            app:destination="@id/seasonsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seasonsFragment"
+        android:name="com.example.tvshowsbase.seasons.SeasonsFragment"
+        android:label="seasons_fragment"
+        tools:layout="@layout/seasons_fragment" >
+        <argument
+            android:name="showId"
+            app:argType="integer" />
+        <argument
+            android:name="seasons"
+            app:argType="integer" />
     </fragment>
 </navigation>
