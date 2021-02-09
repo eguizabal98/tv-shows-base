@@ -18,6 +18,7 @@
     <string name="cast">Cast</string>
     <string name="cast_info">Cast Info Image</string>
     <string name="last_season">Last Season</string>
+    <string name="episode_image">Episode Image</string>
 
     <string-array name="showsFilter">
         <item>Popular</item>

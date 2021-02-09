@@ -1,6 +1,8 @@
 package com.example.domain.di
 
 import com.example.domain.interactors.login.*
+import com.example.domain.interactors.season.GetSeasonsUseCase
+import com.example.domain.interactors.season.GetSeasonsUseCaseImpl
 import com.example.domain.interactors.tvshowsdetail.*
 import com.example.domain.interactors.tvshowsfavorite.*
 import com.example.domain.interactors.tvshowslist.GetTvShowsUseCase
@@ -22,4 +24,5 @@ val interactsModule = module {
         )
     }
     factory<GetFavoriteShowsUseCase> { GetFavoriteShowsUseCaseImpl(showsFavoritesRepository = get()) }
+    factory<GetSeasonsUseCase> { GetSeasonsUseCaseImpl(seasonsRepository = get()) }
 }

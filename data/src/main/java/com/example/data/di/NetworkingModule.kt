@@ -1,9 +1,6 @@
 package com.example.data.di
 
-import com.example.data.network.api.AuthAPI
-import com.example.data.network.api.FavoriteShowAPI
-import com.example.data.network.api.TvShowsAPI
-import com.example.data.network.api.TvShowDetailsAPI
+import com.example.data.network.api.*
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,4 +21,5 @@ val networkingModule = module {
     single { get<Retrofit>().create(TvShowsAPI::class.java) }
     single { get<Retrofit>().create(TvShowDetailsAPI::class.java) }
     single { get<Retrofit>().create(FavoriteShowAPI::class.java) }
+    single { get<Retrofit>().create(TvShowSeasonsAPI::class.java) }
 }
