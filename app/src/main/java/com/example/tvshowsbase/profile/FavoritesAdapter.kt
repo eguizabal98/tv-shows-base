@@ -1,23 +1,23 @@
-package com.example.tvshowsbase.showslist
+package com.example.tvshowsbase.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.TvShow
 import com.example.tvshowsbase.R
-import com.example.tvshowsbase.databinding.TvShowsItemBinding
+import com.example.tvshowsbase.databinding.FavoriteItemBinding
 
-class TvShowsAdapter(private val itemClickListener: ItemClickListener?) :
-    PagedListAdapter<TvShow, TvShowsAdapter.ShowsViewHolder>(DIFF_CALLBACK) {
+class FavoritesAdapter :
+    ListAdapter<TvShow, FavoritesAdapter.ShowsViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowsViewHolder =
         ShowsViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.tv_shows_item,
+                R.layout.favorite_item,
                 parent,
                 false
             )
@@ -25,17 +25,12 @@ class TvShowsAdapter(private val itemClickListener: ItemClickListener?) :
 
     override fun onBindViewHolder(holder: ShowsViewHolder, position: Int) {
         val item: TvShow? = getItem(position)
-        holder.tvShowsItemBinding.tvShow = item
-        holder.tvShowsItemBinding.clickListener = itemClickListener
-        holder.tvShowsItemBinding.executePendingBindings()
+        holder.favoriteItemBinding.tvShow = item
+        holder.favoriteItemBinding.executePendingBindings()
     }
 
-    inner class ShowsViewHolder(val tvShowsItemBinding: TvShowsItemBinding) :
-        RecyclerView.ViewHolder(tvShowsItemBinding.root)
-
-    interface ItemClickListener {
-        fun onItemClicked(tvShow: TvShow)
-    }
+    inner class ShowsViewHolder(val favoriteItemBinding: FavoriteItemBinding) :
+        RecyclerView.ViewHolder(favoriteItemBinding.root)
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShow>() {
