@@ -1,6 +1,11 @@
 package com.example.data.repository
 
+import android.util.Log
+import com.example.data.database.dao.AccountDao
+import com.example.data.database.dao.FavoriteShowDao
+import com.example.data.database.dao.TvShowDao
 import com.example.data.network.api.AuthAPI
+import com.example.data.network.models.authentication.LogOutBody
 import com.example.data.network.models.authentication.SessionRequestBody
 import com.example.data.util.Connectivity
 import com.example.domain.model.NetworkResult
@@ -12,7 +17,10 @@ import retrofit2.HttpException
 
 class AuthRepositoryImpl(
     private val authAPI: AuthAPI,
-    private val connectivity: Connectivity
+    private val connectivity: Connectivity,
+    private val accountDao: AccountDao,
+    private val favoriteShowDao: FavoriteShowDao,
+    private val tvShowDao: TvShowDao
 ) : AuthRepository {
 
     override suspend fun getAuthToken(): NetworkResult<String> {
@@ -70,9 +78,9 @@ class AuthRepositoryImpl(
         return withContext(Dispatchers.IO) {
             try {
                 if (connectivity.hasNetworkAccess()) {
-                    val response =
-                        authAPI.getAccountId(session = sessionID).accountId
-                    NetworkResult.Success(response)
+                    val response = authAPI.getAccountId(session = sessionID)
+                    accountDao.insert(response)
+                    NetworkResult.Success(response.accountId)
                 } else {
                     NetworkResult.Failure(noNetworkAccess, Throwable())
                 }
@@ -89,6 +97,25 @@ class AuthRepositoryImpl(
                     }
                 }
             }
+        }
+    }
+
+    override suspend fun logOutAccount(sessionID: String): NetworkResult<Boolean> {
+        return try {
+            Log.d("LogOut", sessionID)
+            val response = authAPI.logOut(logOutBody = LogOutBody(sessionID))
+            Log.d("LogOut", "$response")
+            if (response.success == true) {
+                accountDao.clearBase()
+                favoriteShowDao.clearBase()
+                tvShowDao.clearTvShows()
+                NetworkResult.Success(true)
+            } else {
+                NetworkResult.Success(false)
+            }
+
+        } catch (e: Exception) {
+            NetworkResult.Failure(e.message.toString(), e.cause)
         }
     }
 

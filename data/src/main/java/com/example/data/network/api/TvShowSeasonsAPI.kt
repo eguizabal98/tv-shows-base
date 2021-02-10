@@ -2,7 +2,7 @@ package com.example.data.network.api
 
 import com.example.data.di.API_KEY
 import com.example.data.di.LANGUAGE
-import com.example.data.network.models.showsdetail.SeasonResponse
+import com.example.data.network.models.season.SeasonResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
