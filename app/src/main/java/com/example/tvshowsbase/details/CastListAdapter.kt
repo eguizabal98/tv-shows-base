@@ -12,7 +12,6 @@ import com.example.tvshowsbase.databinding.CastListItemBinding
 
 class CastListAdapter : ListAdapter<Cast, CastListAdapter.CastViewHolder>(DIFF_CALLBACK) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder =
         CastViewHolder(
             DataBindingUtil.inflate(
@@ -22,7 +21,6 @@ class CastListAdapter : ListAdapter<Cast, CastListAdapter.CastViewHolder>(DIFF_C
                 false
             )
         )
-
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {
         holder.castListItemBinding.cast = getItem(position)

@@ -1,79 +1,113 @@
 package com.example.tvshowsbase.details
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.interactors.tvshowsdetail.GetCastListUseCase
-import com.example.domain.interactors.tvshowsdetail.GetShowDetailsLocalUseCase
-import com.example.domain.interactors.tvshowsfavorite.GetFavoriteShowsUseCase
-import com.example.domain.interactors.tvshowsfavorite.PutShowFavoriteUseCase
-import com.example.domain.model.Cast
-import com.example.domain.model.NetworkResult
-import com.example.domain.model.ShowDetails
+import com.example.domain.interactors.detail.FetchCastListUseCase
+import com.example.domain.interactors.detail.GetCreditsUseCase
+import com.example.domain.interactors.detail.FetchDetailsUseCase
+import com.example.domain.interactors.detail.GetDetailsUseCase
+import com.example.domain.interactors.favorite.GetFavoritesUseCase
+import com.example.domain.interactors.favorite.PutFavoriteUseCase
+import com.example.domain.model.*
 import kotlinx.coroutines.launch
 
 class ShowDetailViewModel(
-    private val getShowDetailsLocalUseCase: GetShowDetailsLocalUseCase,
-    private val getCastListUseCase: GetCastListUseCase,
-    private val putShowFavoriteUseCase: PutShowFavoriteUseCase,
-    private val getFavoriteShowsUseCase: GetFavoriteShowsUseCase
+    private val fetchDetailsUseCase: FetchDetailsUseCase,
+    private val fetchCastListUseCase: FetchCastListUseCase,
+    private val putFavoriteUseCase: PutFavoriteUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase<LiveData<List<TvShow>>>,
+    private val getCreditsUseCase: GetCreditsUseCase<LiveData<List<Cast>>>,
+    private val getDetailsUseCase: GetDetailsUseCase<LiveData<ShowDetails>>
 ) :
     ViewModel() {
 
-    private val _favoriteResult = MutableLiveData<NetworkResult<Boolean>>()
-    val favoriteResult: LiveData<NetworkResult<Boolean>>
-        get() = _favoriteResult
+    private val _favoriteRequest = MutableLiveData<WorkState<Boolean>>()
+    val favoriteRequest: LiveData<WorkState<Boolean>>
+        get() = _favoriteRequest
+
+    lateinit var favoriteResult: LiveData<List<TvShow>>
 
     var favoriteState = false
 
-    private val _details = MutableLiveData<ShowDetails>()
-    val details: LiveData<ShowDetails>
-        get() = _details
+    private val _detailsRequest = MutableLiveData<WorkState<Boolean>>()
+    val detailsRequest: LiveData<WorkState<Boolean>>
+        get() = _detailsRequest
 
-    private val _cast = MutableLiveData<List<Cast>>()
-    val cast: LiveData<List<Cast>>
-        get() = _cast
+    private val _castRequest = MutableLiveData<WorkState<Boolean>>()
+    val castRequest: LiveData<WorkState<Boolean>>
+        get() = _castRequest
+
+    lateinit var details: LiveData<ShowDetails>
+
+    lateinit var cast: LiveData<List<Cast>>
+
+    fun fetchDetails(showId: Int) {
+        viewModelScope.launch {
+            _detailsRequest.postValue(WorkState.Loading)
+            when (val result = fetchDetailsUseCase.getShowDetails(showId)) {
+                is RequestResult.Success -> {
+                    _detailsRequest.postValue(WorkState.Success(result.value))
+                }
+                is RequestResult.Failure -> {
+                    _detailsRequest.postValue(WorkState.Failure(result.error.errorCode))
+                }
+            }
+        }
+    }
 
     fun getDetails(showId: Int) {
         viewModelScope.launch {
-            val response = getShowDetailsLocalUseCase.getShowDetails(showId)
-            _details.postValue(response)
-            Log.d("DetailsViewModel", "$response")
-            checkFavorite(response.showId)
+            details = getDetailsUseCase.getDetails(showId)
         }
+    }
 
+    fun fetchCast(showId: Int) {
+        viewModelScope.launch {
+            _castRequest.postValue(WorkState.Loading)
+            when (val result = fetchCastListUseCase.fetchCast(showId)) {
+                is RequestResult.Success -> {
+                    _castRequest.postValue(WorkState.Success(result.value))
+                }
+                is RequestResult.Failure -> {
+                    _castRequest.postValue(WorkState.Failure(result.error.errorCode))
+                }
+            }
+        }
     }
 
     fun getCast(showId: Int) {
         viewModelScope.launch {
-            _cast.postValue(getCastListUseCase.getCast(showId))
+            cast = getCreditsUseCase.getCredits(showId)
         }
     }
 
     fun putFavorite(sessionId: String, accountId: Int) {
         viewModelScope.launch {
-            _details.value?.let { showDetails ->
-                val response = putShowFavoriteUseCase.putShowFavorite(
+            details.value?.let { showDetails ->
+                _favoriteRequest.postValue(WorkState.Loading)
+                val response = putFavoriteUseCase.putShowFavorite(
                     !favoriteState,
                     showDetails.showId,
                     sessionId,
                     accountId
                 )
-                _favoriteResult.postValue(response)
+                when (response) {
+                    is RequestResult.Failure -> {
+                        _favoriteRequest.postValue(WorkState.Failure(response.error.errorCode))
+                    }
+                    is RequestResult.Success -> {
+                        _favoriteRequest.postValue(WorkState.Success(response.value))
+                    }
+                }
             }
         }
     }
 
-    private fun checkFavorite(showId: Int) {
+    fun checkFavorite() {
         viewModelScope.launch {
-            val favoriteList = getFavoriteShowsUseCase.getFavoriteShows()
-            favoriteList.forEach {
-                if (it.showId == showId) {
-                    _favoriteResult.postValue(NetworkResult.Success(true))
-                }
-            }
+            favoriteResult = getFavoritesUseCase.getFavoriteShows()
         }
     }
 
