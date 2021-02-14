@@ -27,11 +27,13 @@
                 android:layout_width="125dp"
                 android:layout_height="175dp"
                 android:contentDescription="@string/cast_info"
-                app:imageUrl="@{cast.photoUrl}"
+                android:scaleType="centerCrop"
+                app:imageUrlCast="@{cast.photoUrl}"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/name_cast"
+                style="@style/Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -43,6 +45,7 @@
 
             <TextView
                 android:id="@+id/name_character_cast"
+                style="@style/Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

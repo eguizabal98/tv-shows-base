@@ -78,7 +78,7 @@
                 android:layout_below="@id/list_progressBar"
                 android:paddingStart="8dp"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                app:spanCount="2"
+                app:spanCount="4"
                 tools:ignore="RtlSymmetry"
                 tools:listitem="@layout/tv_shows_item" />
 

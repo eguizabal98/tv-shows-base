@@ -17,11 +17,11 @@
 
     <com.google.android.material.card.MaterialCardView
         style="@style/CardViewTvShow"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="400dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="@{()->clickListener.onItemClicked(tvShow)}">
+        android:layout_margin="8dp"
+        android:onClick="@{()->clickListener.onItemClicked(tvShow)}"
+        app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -44,18 +44,12 @@
             <TextView
                 android:id="@+id/tv_show_name"
                 style="@style/Subtitle1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/roboto"
-                android:maxLines="2"
                 android:text="@{tvShow.name}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_show_airtime"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_image"
                 tools:text="Rick and Morty" />
@@ -103,11 +97,11 @@
 
             <TextView
                 android:id="@+id/tv_show_score"
-                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="@{String.valueOf(tvShow.score)}"
+                style="@style/Body2"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_show_airtime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_show_airtime"

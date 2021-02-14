@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/backDrop_image"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="350dp"
             android:contentDescription="@string/background_show_image"
             android:scaleType="centerCrop"
             app:imageUrlBackDrop="@{tvShowDetails.backDropPath}"
@@ -50,8 +50,10 @@
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detail_cardView"
@@ -83,8 +85,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="@string/summary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@+id/title_show_text"
+                    app:layout_constraintStart_toEndOf="@id/poster_show_image"
+                    app:layout_constraintTop_toTopOf="@id/poster_show_image"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
                 <TextView
                     android:id="@+id/title_show_text"
@@ -97,9 +101,10 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{tvShowDetails.name}"
+                    app:layout_constraintBottom_toTopOf="@+id/description_shows_text"
                     app:layout_constraintEnd_toStartOf="@+id/textView2"
                     app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/poster_show_image"
                     app:layout_constraintTop_toBottomOf="@+id/summary_text"
                     tools:text="Show Title Example" />
 
@@ -111,22 +116,26 @@
                     android:layout_marginEnd="16dp"
                     android:contentDescription="@string/favorite_bottom"
                     android:src="@drawable/ic_baseline_favorite_border_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toTopOf="@+id/title_show_text" />
+                    app:layout_constraintTop_toTopOf="@+id/textView2" />
 
                 <TextView
                     android:id="@+id/description_shows_text"
                     style="@style/Body2"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{tvShowDetails.description}"
+                    app:layout_constraintBottom_toTopOf="@+id/textView4"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:layout_constraintStart_toEndOf="@+id/poster_show_image"
+                    app:layout_constraintTop_toBottomOf="@id/title_show_text"
+                    app:layout_constraintVertical_bias="0.49"
+                    app:layout_constraintVertical_chainStyle="packed"
                     tools:text="An animated series on adult-swim about the infinite adventures of Rick, a genius alcoholic and careless scientist, with his grandson Morty, a 14 year-old anxious boy who is not so smart. Together, they explore the infinite universes; causing mayhem and running into trouble." />
 
                 <TextView
@@ -137,15 +146,16 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/created_by"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/last_current_season_text"
+                    app:layout_constraintStart_toEndOf="@+id/poster_show_image"
                     app:layout_constraintTop_toBottomOf="@+id/description_shows_text" />
 
                 <TextView
                     android:id="@+id/created_by_text"
+                    style="@style/Subtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    style="@style/Subtitle1"
                     android:text="@{tvShowDetails.creators}"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -159,33 +169,33 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/last_season"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/poster_show_image"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
                     tools:text="Last Season" />
 
                 <TextView
                     android:id="@+id/cast_show_text"
+                    style="@style/Headline6"
                     android:layout_width="107dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/cast"
-                    style="@style/Headline6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/poster_show_image"
                     tools:text="Cast" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/poster_show_image"
-                    android:layout_width="0dp"
-                    android:layout_height="275dp"
+                    android:layout_width="300dp"
+                    android:layout_height="475dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
                     app:cardCornerRadius="10dp"
                     app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/last_current_season_text">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -200,12 +210,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/poster_show_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/poster_show_image"
-                    app:layout_constraintTop_toTopOf="@+id/poster_show_image">
+                    app:layout_constraintTop_toBottomOf="@+id/last_current_season_text">
 
                     <TextView
                         android:id="@+id/season_number_text"

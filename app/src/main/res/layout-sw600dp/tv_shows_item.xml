@@ -18,7 +18,7 @@
     <com.google.android.material.card.MaterialCardView
         style="@style/CardViewTvShow"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="550dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="@{()->clickListener.onItemClicked(tvShow)}">
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/tv_show_name"
-                style="@style/Subtitle1"
+                style="@style/Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/tv_show_airtime"
-                style="@style/Subtitle2"
+                style="@style/Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -75,7 +75,7 @@
 
             <TextView
                 android:id="@+id/tv_description"
-                style="@style/Body2"
+                style="@style/Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -103,7 +103,7 @@
 
             <TextView
                 android:id="@+id/tv_show_score"
-                style="@style/Subtitle2"
+                style="@style/Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

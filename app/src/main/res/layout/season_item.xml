@@ -10,23 +10,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <TextView
+            style="@style/Headline6"
             android:id="@+id/season_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_margin="16dp"
             tools:text="Season Name" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodes_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/episode_item" />

@@ -15,21 +15,32 @@
             app:destination="@id/tvShowsFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="logOut"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/tvShowsFragment"
         android:name="com.example.tvshowsbase.showslist.TvShowsFragment"
         android:label="tv_shows_fragment"
-        tools:layout="@layout/tv_shows_fragment" >
+        tools:layout="@layout/tv_shows_fragment">
         <action
             android:id="@+id/action_tvShowsFragment_to_showDetailFragment"
             app:destination="@id/showDetailFragment" />
+        <action
+            android:id="@+id/action_tvShowsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_tvShowsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/navigation" />
     </fragment>
     <fragment
         android:id="@+id/showDetailFragment"
         android:name="com.example.tvshowsbase.details.ShowDetailFragment"
         android:label="ShowDetailFragment"
-        tools:layout="@layout/show_detail_fragment" >
+        tools:layout="@layout/show_detail_fragment">
         <argument
             android:name="showId"
             app:argType="integer" />
@@ -41,7 +52,7 @@
         android:id="@+id/seasonsFragment"
         android:name="com.example.tvshowsbase.seasons.SeasonsFragment"
         android:label="seasons_fragment"
-        tools:layout="@layout/seasons_fragment" >
+        tools:layout="@layout/seasons_fragment">
         <argument
             android:name="showId"
             app:argType="integer" />
@@ -49,4 +60,9 @@
             android:name="seasons"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.tvshowsbase.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/profile_fragment" />
 </navigation>

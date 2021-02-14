@@ -188,8 +188,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/last_current_season_text">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="300dp"
+                        android:layout_height="400dp"
                         android:contentDescription="@string/poster_show_image"
                         android:scaleType="centerCrop"
                         app:imageUrlShow="@{tvShowDetails.lastSeason.posterPath}" />
