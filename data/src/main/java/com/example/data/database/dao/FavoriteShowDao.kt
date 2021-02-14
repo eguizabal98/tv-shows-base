@@ -1,5 +1,6 @@
 package com.example.data.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -9,7 +10,7 @@ import com.example.data.database.entities.FavoriteShowEntity
 @Dao
 interface FavoriteShowDao {
     @Query("SELECT * FROM favorites_table")
-    suspend fun getPopularShows(): List<FavoriteShowEntity>
+    fun getPopularShows(): LiveData<List<FavoriteShowEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(data: List<FavoriteShowEntity>)

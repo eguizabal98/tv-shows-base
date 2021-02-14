@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/profile_menu"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/view_profile"
         app:showAsAction="collapseActionView" />
 
     <item
+        android:id="@+id/logOut_menu"
         android:icon="@drawable/ic_baseline_log_out"
         android:title="@string/log_out"
         app:showAsAction="collapseActionView" />

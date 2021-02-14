@@ -16,17 +16,16 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/CardViewTvShow"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:onClick="@{()->clickListener.onItemClicked(tvShow)}"
-        app:cardCornerRadius="16dp">
+        android:onClick="@{()->clickListener.onItemClicked(tvShow)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/light_cream">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/tv_show_image"
@@ -34,8 +33,8 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/tv_show_poster"
-                android:scaleType="fitXY"
-                app:imageUrl="@{tvShow.posterImage}"
+                android:scaleType="centerCrop"
+                app:imageUrlShow="@{tvShow.posterImage}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_show_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,27 +43,31 @@
 
             <TextView
                 android:id="@+id/tv_show_name"
-                android:layout_width="wrap_content"
+                style="@style/Subtitle1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto"
+                android:maxLines="2"
                 android:text="@{tvShow.name}"
-                android:textSize="14sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tv_show_airtime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_image"
                 tools:text="Rick and Morty" />
 
             <TextView
                 android:id="@+id/tv_show_airtime"
+                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{tvShow.airDate}"
-                android:textSize="12sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tv_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_show_name"
@@ -72,6 +75,7 @@
 
             <TextView
                 android:id="@+id/tv_description"
+                style="@style/Body2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -80,7 +84,6 @@
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:text="@{tvShow.description}"
-                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,12 +103,11 @@
 
             <TextView
                 android:id="@+id/tv_show_score"
+                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="@{String.valueOf(tvShow.score)}"
-                android:textSize="12sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_show_airtime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_show_airtime"

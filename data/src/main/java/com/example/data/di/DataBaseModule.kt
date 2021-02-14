@@ -18,6 +18,10 @@ val dataBaseModule = module {
     }
     factory { get<DataBase>().tvShowDao() }
     factory { get<DataBase>().favoriteShowDao() }
+    factory { get<DataBase>().accountDao() }
+    factory { get<DataBase>().detailsDao() }
+    factory { get<DataBase>().creditsDao() }
+    factory { get<DataBase>().seasonDao() }
 
     single {
         ItemBoundaryCallBack(tvShowsAPI = get(), dataBase = get(), scope = get())

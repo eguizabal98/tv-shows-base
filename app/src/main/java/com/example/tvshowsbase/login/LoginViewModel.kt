@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.login.GetAccountIdUseCase
 import com.example.domain.interactors.login.GetAuthTokenUseCase
 import com.example.domain.interactors.login.GetSessionIdUseCase
-import com.example.domain.model.NetworkResult
+import com.example.domain.model.RequestResult
 import com.example.domain.model.WorkState
 import kotlinx.coroutines.launch
 
@@ -32,11 +32,11 @@ class LoginViewModel(
         _authTokenState.value = WorkState.Loading
         viewModelScope.launch {
             when (val response = getAuthTokenUseCase.getAuthToken()) {
-                is NetworkResult.Success -> {
+                is RequestResult.Success -> {
                     _authTokenState.postValue(WorkState.Success(response.value))
                 }
-                is NetworkResult.Failure -> {
-                    _authTokenState.postValue(WorkState.Failure(response.message))
+                is RequestResult.Failure -> {
+                    _authTokenState.postValue(WorkState.Failure(response.error.errorCode))
                 }
             }
         }
@@ -46,11 +46,11 @@ class LoginViewModel(
         _sessionIdState.value = WorkState.Loading
         viewModelScope.launch {
             when (val response = getSessionIdUseCase.getSessionId(token)) {
-                is NetworkResult.Success -> {
+                is RequestResult.Success -> {
                     _sessionIdState.postValue(WorkState.Success(response.value))
                 }
-                is NetworkResult.Failure -> {
-                    _sessionIdState.postValue(WorkState.Failure(response.message))
+                is RequestResult.Failure -> {
+                    _sessionIdState.postValue(WorkState.Failure(response.error.errorCode))
                 }
             }
         }
@@ -59,11 +59,11 @@ class LoginViewModel(
     fun getAccountId(sessionId: String) {
         viewModelScope.launch {
             when (val response = getAccountIdUseCase.getAccountId(sessionId)) {
-                is NetworkResult.Success -> {
+                is RequestResult.Success -> {
                     _accountIdState.postValue(WorkState.Success(response.value))
                 }
-                is NetworkResult.Failure -> {
-                    _accountIdState.postValue(WorkState.Failure(response.message))
+                is RequestResult.Failure -> {
+                    _accountIdState.postValue(WorkState.Failure(response.error.errorCode))
                 }
             }
         }

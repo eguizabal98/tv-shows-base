@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 const val API_KEY = "2615cf6e1170581121d16a6c7d7e4c9e"
 const val LANGUAGE = "en-US"
-const val SORT_VAL = "created_at.asc"
+const val SORT_VAL = "created_at.desc"
 
 val networkingModule = module {
     single {
@@ -19,7 +19,7 @@ val networkingModule = module {
     }
     single { get<Retrofit>().create(AuthAPI::class.java) }
     single { get<Retrofit>().create(TvShowsAPI::class.java) }
-    single { get<Retrofit>().create(TvShowDetailsAPI::class.java) }
-    single { get<Retrofit>().create(FavoriteShowAPI::class.java) }
-    single { get<Retrofit>().create(TvShowSeasonsAPI::class.java) }
+    single { get<Retrofit>().create(DetailsAPI::class.java) }
+    single { get<Retrofit>().create(FavoritesAPI::class.java) }
+    single { get<Retrofit>().create(SeasonsAPI::class.java) }
 }

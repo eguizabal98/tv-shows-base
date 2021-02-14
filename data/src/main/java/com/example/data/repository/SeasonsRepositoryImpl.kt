@@ -1,27 +1,44 @@
 package com.example.data.repository
 
-import com.example.data.network.api.TvShowSeasonsAPI
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.data.database.dao.SeasonDao
+import com.example.data.database.entities.SeasonEntity
+import com.example.data.network.api.SeasonsAPI
+import com.example.data.util.mapSeasonToRoom
 import com.example.data.util.mapSeasonToSeasonDomain
-import com.example.domain.model.NetworkResult
+import com.example.domain.model.RequestResult
 import com.example.domain.model.Season
 import com.example.domain.repository.SeasonsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class SeasonsRepositoryImpl(private val tvShowSeasonsAPI: TvShowSeasonsAPI) : SeasonsRepository {
+class SeasonsRepositoryImpl(
+    private val seasonsAPI: SeasonsAPI,
+    private val seasonDao: SeasonDao
+) :
+    SeasonsRepository<LiveData<List<Season>>>,
+    BaseRepository() {
 
-    override suspend fun getSeasons(showsId: Int, seasons: Int): NetworkResult<List<Season>> {
-        val seasonsList = arrayListOf<Season>()
-        withContext(Dispatchers.IO) {
+    override suspend fun fetchSeasons(showsId: Int, seasons: Int): RequestResult<Boolean> {
+        return fetchData(apiAction = {
+            val seasonsList = arrayListOf<SeasonEntity>()
             for (n in 1..seasons) {
                 seasonsList.add(
-                    tvShowSeasonsAPI.getSeasons(tvId = showsId, seasonNumber = n)
-                        .mapSeasonToSeasonDomain()
+                    seasonsAPI.getSeasons(tvId = showsId, seasonNumber = n)
+                        .mapSeasonToRoom(showsId)
                 )
             }
-        }
-
-        return NetworkResult.Success(seasonsList)
+            seasonsList
+        }, dbAction = {
+            seasonDao.insert(it)
+        }, returnAction = {
+            RequestResult.Success(true)
+        })
     }
 
+    override suspend fun getSeasons(showsId: Int): LiveData<List<Season>> {
+        val value = seasonDao.getSeasons(showsId)
+        return Transformations.map(value) { seasonEntityList ->
+            seasonEntityList.mapSeasonToSeasonDomain()
+        }
+    }
 }

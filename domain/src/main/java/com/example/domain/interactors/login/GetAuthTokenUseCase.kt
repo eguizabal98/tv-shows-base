@@ -1,7 +1,7 @@
 package com.example.domain.interactors.login
 
-import com.example.domain.model.NetworkResult
+import com.example.domain.model.RequestResult
 
 interface GetAuthTokenUseCase {
-    suspend fun getAuthToken(): NetworkResult<String>
+    suspend fun getAuthToken(): RequestResult<String>
 }

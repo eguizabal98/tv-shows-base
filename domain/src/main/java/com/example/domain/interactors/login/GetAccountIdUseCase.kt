@@ -1,7 +1,7 @@
 package com.example.domain.interactors.login
 
-import com.example.domain.model.NetworkResult
+import com.example.domain.model.RequestResult
 
 interface GetAccountIdUseCase {
-    suspend fun getAccountId(sessionID: String): NetworkResult<Int>
+    suspend fun getAccountId(sessionID: String): RequestResult<Int>
 }

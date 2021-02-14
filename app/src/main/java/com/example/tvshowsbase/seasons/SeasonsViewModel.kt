@@ -1,35 +1,45 @@
 package com.example.tvshowsbase.seasons
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.interactors.season.GetSeasonsUseCase
-import com.example.domain.model.NetworkResult
+import com.example.domain.interactors.season.FetchSeasonsUseCase
+import com.example.domain.interactors.season.GetSeasonUseCase
+import com.example.domain.model.RequestResult
 import com.example.domain.model.Season
 import com.example.domain.model.WorkState
 import kotlinx.coroutines.launch
 
-class SeasonsViewModel(private val getSeasonsUseCase: GetSeasonsUseCase) : ViewModel() {
+class SeasonsViewModel(
+    private val fetchSeasonsUseCase: FetchSeasonsUseCase,
+    private val getSeasonUseCase: GetSeasonUseCase<LiveData<List<Season>>>
+) : ViewModel() {
 
-    private val _seasonList = MutableLiveData<WorkState<List<Season>>>()
-    val seasonList: LiveData<WorkState<List<Season>>>
-        get() = _seasonList
+    private val _seasonRequest = MutableLiveData<WorkState<Boolean>>()
+    val seasonRequest: LiveData<WorkState<Boolean>>
+        get() = _seasonRequest
 
-    fun getSeasons(showsId: Int, seasons: Int) {
-        _seasonList.value = WorkState.Loading
+    lateinit var seasonList: LiveData<List<Season>>
+
+    fun fetchSeasons(showsId: Int, seasons: Int) {
         viewModelScope.launch {
-            when (val response = getSeasonsUseCase.getSeasons(showsId, seasons)) {
-                is NetworkResult.Failure -> {
-                    Log.d("Seasons", response.message)
-                    _seasonList.postValue(WorkState.Failure(response.message))
+            _seasonRequest.postValue(WorkState.Loading)
+            when (val response = fetchSeasonsUseCase.getSeasons(showsId, seasons)) {
+                is RequestResult.Success -> {
+                    _seasonRequest.postValue(WorkState.Success(response.value))
                 }
-                is NetworkResult.Success -> {
-                    Log.d("Seasons", response.value.toString())
-                    _seasonList.postValue(WorkState.Success(response.value))
+                is RequestResult.Failure -> {
+                    _seasonRequest.postValue(WorkState.Failure(response.error.errorCode))
                 }
             }
         }
     }
+
+    fun getSeasons(showId: Int) {
+        viewModelScope.launch {
+            seasonList = getSeasonUseCase.getSeasons(showId)
+        }
+    }
+
 }

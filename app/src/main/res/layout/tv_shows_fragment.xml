@@ -23,18 +23,19 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
+                style="@style/Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:theme="@style/Toolbar" />
+                tools:title="Title Test" />
 
             <LinearLayout
+                style="@style/filterBar"
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="16dp"
@@ -50,9 +51,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    style="@style/Body1"
                     android:text="@string/filter_by" />
 
                 <Spinner
+                    style="@style/filterBar"
                     android:id="@+id/filter_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -87,8 +90,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:indeterminate="true"/>
+                android:indeterminate="true"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
