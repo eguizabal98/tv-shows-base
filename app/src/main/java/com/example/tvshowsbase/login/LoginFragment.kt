@@ -9,23 +9,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.WorkState
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.LoginFragmentBinding
+import com.example.tvshowsbase.databindingutils.visible
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModel()
     private lateinit var binding: LoginFragmentBinding
     private val sharedPreferences: SharedPreferences by inject()
+    private val args: LoginFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,21 +38,37 @@ class LoginFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (binding.loginWebView.canGoBack()) {
+                        binding.loginWebView.goBack()
+                    } else {
+                        isEnabled = false
+                        activity?.onBackPressed()
+                    }
+                }
+            })
+
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.viewModel = viewModel
         webViewConfiguration()
         createViewModelObservers()
         createBindingFragmentObservers()
-
         checkCredentials()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun webViewConfiguration() {
+        if (args.logOut) {
+            binding.loginWebView.clearCache(true)
+            binding.loginWebView.loadUrl(WEB_VIEW_URL_LOGOUT)
+            binding.loginWebView.clearHistory()
+        }
         binding.loginWebView.webViewClient = webClient
         binding.loginWebView.settings.javaScriptEnabled = true
     }
@@ -61,72 +81,51 @@ class LoginFragment : Fragment() {
 
     private fun createViewModelObservers() {
         viewModel.authTokeState.observe(viewLifecycleOwner, { response ->
-            when (response) {
-                WorkState.Loading -> {
-                    starProgressBar()
-                }
-                is WorkState.Success -> {
-                    viewModel.tokenTemp = response.value
-                    binding.loginWebView.loadUrl("$WEB_VIEW_URL${viewModel.tokenTemp}")
-                    updateUIChangeToWebView()
-                }
-                is WorkState.Failure -> {
-                    stopProgressBar()
-                    showSnackBar(response.message)
-                }
-            }
+            handleResponse(response = response, successAction = {
+                viewModel.tokenTemp = it
+                binding.loginWebView.loadUrl("$WEB_VIEW_URL${viewModel.tokenTemp}")
+                updateUIChangeToWebView()
+            })
         })
 
         viewModel.sessionIdState.observe(viewLifecycleOwner, { response ->
-            when (response) {
-                WorkState.Loading -> {
-                    starProgressBar()
+            handleResponse(response = response, successAction = {
+                sharedPreferences.edit {
+                    putString(SESSION_KEY, it)
+                    apply()
                 }
-                is WorkState.Success -> {
-                    stopProgressBar()
-                    Log.d("LoginFragment", "Session ID: ${response.value}")
-
-                    sharedPreferences.edit {
-                        putString(SESSION_KEY, response.value)
-                        apply()
-                    }
-                    checkCredentials()
-                }
-                is WorkState.Failure -> {
-                    stopProgressBar()
-                    showSnackBar(response.message)
-                }
-            }
+                checkCredentials()
+            })
         })
 
         viewModel.accountIdState.observe(viewLifecycleOwner, { response ->
-            when (response) {
-                WorkState.Loading -> {
-                    starProgressBar()
+            handleResponse(response = response, successAction = {
+                sharedPreferences.edit {
+                    putInt(ACCOUNT_KEY, it)
+                    apply()
                 }
-                is WorkState.Success -> {
-                    stopProgressBar()
-                    Log.d("LoginFragment", "Account ID: ${response.value}")
-
-                    sharedPreferences.edit {
-                        putInt(ACCOUNT_KEY, response.value)
-                        apply()
-                    }
-                    checkCredentials()
-                }
-                is WorkState.Failure -> {
-                    stopProgressBar()
-                    showSnackBar(response.message)
-                }
-            }
+                checkCredentials()
+            })
         })
     }
 
     private val webClient = object : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            url?.let { view?.loadUrl(it) }
-            return false
+            var condition = true
+            url?.let {
+                allowStrings.forEach {
+                    if (url.contains(it)) {
+                        condition = false
+                    }
+                }
+            }
+            return if (condition) {
+                view?.loadUrl("$WEB_VIEW_URL${viewModel.tokenTemp}")
+                true
+            } else {
+                false
+            }
         }
 
         override fun onPageFinished(view: WebView?, url: String) {
@@ -134,47 +133,92 @@ class LoginFragment : Fragment() {
             if (url.contains(ALLOW_CHECK)) {
                 viewModel.getSessionId(viewModel.tokenTemp)
             }
+            if (url.contains(DENY_CHECK)) {
+                view?.loadUrl(WEB_VIEW_URL_LOGOUT)
+                view?.clearCache(true)
+                view?.clearHistory()
+                updateUIChangeFromWebView()
+            }
         }
     }
 
     private fun checkCredentials() {
-        val session = sharedPreferences.getString(SESSION_KEY, "")
+        val session = sharedPreferences.getString(SESSION_KEY, null)
         val account = sharedPreferences.getInt(ACCOUNT_KEY, 0)
 
-        if (session?.isNotEmpty() == true) {
-            Log.d("Login", "else")
+        if (!session.isNullOrEmpty()) {
             viewModel.getAccountId(session)
         }
 
-        if (session != "" && account != 0) {
-            Log.d("Login", "check2")
+        if (!session.isNullOrEmpty() && account != 0) {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTvShowsFragment())
         }
     }
 
-    private fun showSnackBar(message: String) {
-        Snackbar.make(binding.loginConstrain, message, Snackbar.LENGTH_SHORT).show()
+    private fun <T : Any> handleResponse(response: WorkState<T>, successAction: (T) -> Unit) {
+        when (response) {
+            WorkState.Loading -> {
+                starProgressBar()
+            }
+            is WorkState.Success -> {
+                stopProgressBar()
+                successAction(response.value)
+            }
+            is WorkState.Failure -> {
+                stopProgressBar()
+                showErrorMessage(response.error)
+            }
+            else -> {
+            }
+        }
     }
 
-    private fun starProgressBar() {
-        binding.authProgressBar.visibility = View.VISIBLE
-    }
-
-    private fun stopProgressBar() {
-        binding.authProgressBar.visibility = View.GONE
+    private fun showErrorMessage(response: InternalErrorCodes) {
+        when (response) {
+            InternalErrorCodes.NO_INTERNET_ACCESS -> showMessage(getString(R.string.no_internet_access))
+            InternalErrorCodes.BAD_CREDENTIALS -> showMessage(getString(R.string.error_provider))
+            InternalErrorCodes.NOT_FOUND -> showMessage(getString(R.string.error_provider))
+            InternalErrorCodes.NOT_SPECIFIC -> showMessage(getString(R.string.try_again))
+            InternalErrorCodes.NOT_DB_ENTRY -> showMessage(getString(R.string.no_local_available))
+        }
     }
 
     private fun updateUIChangeToWebView() {
-        binding.authProgressBar.visibility = View.GONE
+        stopProgressBar()
         binding.loginText.visibility = View.GONE
         binding.loginButton.visibility = View.GONE
         binding.loginWebView.visibility = View.VISIBLE
     }
 
+    private fun updateUIChangeFromWebView() {
+        binding.loginWebView.visibility = View.GONE
+        binding.loginText.visibility = View.VISIBLE
+        binding.loginButton.visibility = View.VISIBLE
+    }
+
+    private fun starProgressBar() {
+        binding.authProgressBar.visible(true)
+    }
+
+    private fun stopProgressBar() {
+        binding.authProgressBar.visible(false)
+    }
+
+    private fun showMessage(message: String) {
+        Snackbar.make(binding.loginConstrain, message, Snackbar.LENGTH_SHORT).show()
+    }
+
     companion object {
         const val ALLOW_CHECK = "/allow"
-        const val WEB_VIEW_URL = "https://www.themoviedb.org/authenticate/"
+        const val DENY_CHECK = "/deny"
         const val SESSION_KEY = "sessionId"
         const val ACCOUNT_KEY = "accountId"
+        const val WEB_VIEW_URL = "https://www.themoviedb.org/authenticate/"
+        const val WEB_VIEW_URL_LOGOUT = "https://www.themoviedb.org/logout"
+        const val WEB_VIEW_URL_LOGIN = "login"
     }
+
+    private val allowStrings = listOf(
+        WEB_VIEW_URL, WEB_VIEW_URL_LOGOUT, WEB_VIEW_URL_LOGIN, ALLOW_CHECK
+    )
 }
