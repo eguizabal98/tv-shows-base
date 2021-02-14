@@ -6,5 +6,4 @@ interface AuthRepository {
     suspend fun getAuthToken(): NetworkResult<String>
     suspend fun getSessionId(token: String): NetworkResult<String>
     suspend fun getAccountId(sessionID: String): NetworkResult<Int>
-    suspend fun logOutAccount(sessionID: String): NetworkResult<Boolean>
 }

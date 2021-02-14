@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.tvshowsbase.details.ShowDetailViewModel
 import com.example.tvshowsbase.login.LoginViewModel
-import com.example.tvshowsbase.profile.ProfileViewModel
 import com.example.tvshowsbase.seasons.SeasonsViewModel
 import com.example.tvshowsbase.showslist.TvShowsViewModel
 import org.koin.android.ext.koin.androidContext
@@ -20,13 +19,7 @@ val presenterModule = module {
             getAccountIdUseCase = get()
         )
     }
-    viewModel {
-        TvShowsViewModel(
-            getTvShowsUseCase = get(),
-            refreshShowsFavoritesUseCase = get(),
-            logOutUseCase = get()
-        )
-    }
+    viewModel { TvShowsViewModel(getTvShowsUseCase = get(), refreshShowsFavoritesUseCase = get()) }
     viewModel {
         ShowDetailViewModel(
             getShowDetailsLocalUseCase = get(),
@@ -36,7 +29,6 @@ val presenterModule = module {
         )
     }
     viewModel { SeasonsViewModel(getSeasonsUseCase = get()) }
-    viewModel { ProfileViewModel(getAccountUseCase = get(), getFavoriteShowsUseCase = get()) }
 
     single<SharedPreferences> {
         androidContext().getSharedPreferences("sessionInfo", Context.MODE_PRIVATE)

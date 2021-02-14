@@ -1,12 +1,11 @@
 package com.example.data.util
 
-import com.example.data.database.entities.AccountEntity
 import com.example.data.database.entities.FavoriteShowEntity
 import com.example.data.database.entities.ShowDetailEntity
 import com.example.data.database.entities.TVShowEntity
-import com.example.data.network.models.season.SeasonResponse
 import com.example.data.network.models.showsdetail.CastResponse
 import com.example.data.network.models.showsdetail.EpisodeResponse
+import com.example.data.network.models.showsdetail.SeasonResponse
 import com.example.domain.model.*
 
 const val NOT_AVAILABLE = "Not Available"
@@ -64,8 +63,8 @@ fun List<FavoriteShowEntity>.mapFavoriteToShowDomain(): List<TvShow> = map {
         it.name,
         it.score,
         it.airDate,
-        completeUrl(it.posterImage),
-        completeUrl(it.backDropImage),
+        it.posterImage,
+        it.backDropImage,
         it.description,
         it.page
     )
@@ -88,15 +87,3 @@ fun EpisodeResponse.mapToDomain() = Episode(
 )
 
 fun List<EpisodeResponse>.mapEpisodeToEpisodeDomain() = map { it.mapToDomain() }
-
-fun AccountEntity.mapToProfileDomain(): Profile =
-    Profile(
-        accountId,
-        name ?: NOT_AVAILABLE,
-        userName,
-        if (profilePath?.tmdbAvatar == null) {
-            completeProfileUrl(profilePath?.gravatar?.hash) ?: NOT_AVAILABLE
-        } else {
-            completeUrl(profilePath.tmdbAvatar.avatarPath) ?: NOT_AVAILABLE
-        }
-    )

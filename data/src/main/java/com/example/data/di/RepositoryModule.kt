@@ -8,15 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory<AuthRepository> {
-        AuthRepositoryImpl(
-            authAPI = get(),
-            connectivity = get(),
-            accountDao = get(),
-            favoriteShowDao = get(),
-            tvShowDao = get()
-        )
-    }
+    factory<AuthRepository> { AuthRepositoryImpl(authAPI = get(), connectivity = get()) }
     factory<ShowsRepository<Any>> { ShowsRepositoryImpl(dataBase = get()) }
     factory<ShowDetailsRepository> {
         ShowDetailsRepositoryImpl(
@@ -31,5 +23,4 @@ val repositoryModule = module {
         )
     }
     factory<SeasonsRepository> { SeasonsRepositoryImpl(tvShowSeasonsAPI = get()) }
-    factory<AccountRepository> { AccountRepositoryImpl(accountDao = get()) }
 }

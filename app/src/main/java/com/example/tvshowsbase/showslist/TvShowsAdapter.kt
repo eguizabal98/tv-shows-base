@@ -10,7 +10,7 @@ import com.example.domain.model.TvShow
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.TvShowsItemBinding
 
-class TvShowsAdapter(private val itemClickListener: ItemClickListener?) :
+class TvShowsAdapter(private val itemClickListener: ItemClickListener) :
     PagedListAdapter<TvShow, TvShowsAdapter.ShowsViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowsViewHolder =

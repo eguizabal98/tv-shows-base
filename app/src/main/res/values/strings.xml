@@ -19,10 +19,6 @@
     <string name="cast_info">Cast Info Image</string>
     <string name="last_season">Last Season</string>
     <string name="episode_image">Episode Image</string>
-    <string name="profile">Profile</string>
-    <string name="user_name">User Name</string>
-    <string name="user_profile_image">User Profile Image</string>
-    <string name="favorite_shows">Favorite Shows</string>
 
     <string-array name="showsFilter">
         <item>Popular</item>

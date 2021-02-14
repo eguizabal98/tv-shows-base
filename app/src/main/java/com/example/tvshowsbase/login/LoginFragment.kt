@@ -13,7 +13,6 @@ import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.domain.model.WorkState
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.LoginFragmentBinding
@@ -27,7 +26,6 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModel()
     private lateinit var binding: LoginFragmentBinding
     private val sharedPreferences: SharedPreferences by inject()
-    private val args: LoginFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +49,6 @@ class LoginFragment : Fragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun webViewConfiguration() {
-        if (args.logOut) {
-            Log.d("Login", "ClearCache")
-            binding.loginWebView.clearCache(true)
-            binding.loginWebView.clearHistory()
-        }
         binding.loginWebView.webViewClient = webClient
         binding.loginWebView.settings.javaScriptEnabled = true
     }

@@ -6,10 +6,3 @@ fun completeUrl(path: String?): String? =
     } else {
         null
     }
-
-fun completeProfileUrl(path: String?): String? =
-    if (!path.isNullOrEmpty()) {
-        "https://www.gravatar.com/avatar/$path.jpg"
-    } else {
-        null
-    }

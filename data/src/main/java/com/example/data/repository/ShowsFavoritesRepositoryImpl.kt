@@ -56,8 +56,8 @@ class ShowsFavoritesRepositoryImpl(
         )
         if (!favorite) {
             favoriteShowDao.delete(showId)
-        } else {
-            refreshFavoritesShows(accountId, sessionId, 1)
+        }else{
+            refreshFavoritesShows(accountId,sessionId,1)
         }
 
         return NetworkResult.Success(favorite)

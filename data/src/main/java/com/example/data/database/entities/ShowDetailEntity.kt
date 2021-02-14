@@ -2,9 +2,9 @@ package com.example.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.data.network.models.season.SeasonResponse
 import com.example.data.network.models.showsdetail.CreatorResponse
 import com.example.data.network.models.showsdetail.EpisodeResponse
+import com.example.data.network.models.showsdetail.SeasonResponse
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "tvShowDetail_table")

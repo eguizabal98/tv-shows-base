@@ -2,7 +2,6 @@ package com.example.tvshowsbase.showslist
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.data.paging.ItemBoundaryCallBack
 import com.example.domain.model.FilterType
 import com.example.domain.model.TvShow
-import com.example.domain.model.WorkState
 import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.TvShowsFragmentBinding
 import com.example.tvshowsbase.login.LoginFragment.Companion.ACCOUNT_KEY
@@ -70,7 +68,7 @@ class TvShowsFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("TvShowsFragment", "OnCreate")
+        setHasOptionsMenu(true)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -112,56 +110,11 @@ class TvShowsFragment : Fragment(),
                 }
 
             }
-
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.profile_menu -> {
-                    findNavController().navigate(TvShowsFragmentDirections.actionTvShowsFragmentToProfileFragment())
-                    true
-                }
-                R.id.logOut_menu -> {
-                    showSnackBar("logout")
-                    val sessionId = sharedPreferences.getString(SESSION_KEY, "").toString()
-                    viewModel.logOut(sessionId)
-                    true
-                }
-                else -> true
-            }
-        }
     }
 
     private fun createViewModelObservers() {
         viewModel.showsList.observe(viewLifecycleOwner, {
             tvShowsAdapter?.submitList(it)
-        })
-
-        viewModel.logOutState.observe(viewLifecycleOwner, {
-            Log.d("LogOut", "Change")
-            when (it) {
-                WorkState.Loading -> {
-                    Log.d("LogOut", "Loading")
-                    showSnackBar("Loading")
-                }
-                is WorkState.Success -> {
-                    if (it.value) {
-                        Log.d("LogOut", "Success ${it.value}")
-                        showSnackBar("logout Success")
-                        sharedPreferences.edit().clear().apply()
-                        findNavController().navigate(
-                            TvShowsFragmentDirections.actionTvShowsFragmentToLoginFragment(
-                                true
-                            )
-                        )
-                    } else {
-                        Log.d("LogOut", "${it.value}")
-                        showSnackBar("Try again")
-                    }
-                }
-                is WorkState.Failure -> {
-                    Log.d("LogOut", it.message)
-                    showSnackBar("Try again")
-                }
-            }
         })
     }
 

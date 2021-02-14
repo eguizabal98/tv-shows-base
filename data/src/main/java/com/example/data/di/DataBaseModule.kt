@@ -18,7 +18,6 @@ val dataBaseModule = module {
     }
     factory { get<DataBase>().tvShowDao() }
     factory { get<DataBase>().favoriteShowDao() }
-    factory { get<DataBase>().accountDao() }
 
     single {
         ItemBoundaryCallBack(tvShowsAPI = get(), dataBase = get(), scope = get())

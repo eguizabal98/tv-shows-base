@@ -1,9 +1,5 @@
 package com.example.domain.di
 
-import com.example.domain.interactors.account.GetAccountUseCase
-import com.example.domain.interactors.account.GetAccountUseCaseImpl
-import com.example.domain.interactors.account.LogOutUseCase
-import com.example.domain.interactors.account.LogOutUseCaseImpl
 import com.example.domain.interactors.login.*
 import com.example.domain.interactors.season.GetSeasonsUseCase
 import com.example.domain.interactors.season.GetSeasonsUseCaseImpl
@@ -29,6 +25,4 @@ val interactsModule = module {
     }
     factory<GetFavoriteShowsUseCase> { GetFavoriteShowsUseCaseImpl(showsFavoritesRepository = get()) }
     factory<GetSeasonsUseCase> { GetSeasonsUseCaseImpl(seasonsRepository = get()) }
-    factory<GetAccountUseCase> { GetAccountUseCaseImpl(accountRepository = get()) }
-    factory<LogOutUseCase> { LogOutUseCaseImpl(authRepository = get()) }
 }
