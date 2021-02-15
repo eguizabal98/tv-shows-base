@@ -29,7 +29,7 @@ class TvShowsViewModel(
         get() = _logOutState
 
     val showsList: LiveData<PagedList<TvShow>> =
-        getTvShowsUseCase.getPopularShows()
+        getTvShowsUseCase.getShows()
 
     fun getFavorites(accountId: Int, sessionId: String, page: Int) {
         if (firstCall) {
