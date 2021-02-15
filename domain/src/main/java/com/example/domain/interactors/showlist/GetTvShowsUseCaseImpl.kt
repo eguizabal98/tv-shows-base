@@ -4,7 +4,7 @@ import com.example.domain.repository.ShowsRepository
 
 class GetTvShowsUseCaseImpl<T : Any>(private val showsRepository: ShowsRepository<T>) :
     GetTvShowsUseCase<T> {
-    override fun getPopularShows(): T {
-        return showsRepository.getPopularShows()
+    override fun getShows(): T {
+        return showsRepository.getShows()
     }
 }
