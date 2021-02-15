@@ -2,8 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<<<<<<< HEAD
-=======
     <color name="transparent">#00FFFFFF</color>
 
     <color name="orange_500">#f9aa33</color>
@@ -17,5 +15,4 @@
     <color name="secondaryDarkColor">#c17b00</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#161616</color>
->>>>>>> develop
 </resources>
