@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tvShow"
+            type="com.example.domain.model.TvShow" />
+
+        <variable
+            name="clickListener"
+            type="com.example.tvshowsbase.showslist.TvShowsAdapter.ItemClickListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/CardViewTvShow"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="@{()->clickListener.onItemClicked(tvShow)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/tv_show_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/tv_show_poster"
+                android:scaleType="centerCrop"
+                app:imageUrlShow="@{tvShow.posterImage}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_show_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <TextView
+                android:id="@+id/tv_show_name"
+                style="@style/Subtitle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto"
+                android:maxLines="2"
+                android:text="@{tvShow.name}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_show_airtime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_show_image"
+                tools:text="Rick and Morty" />
+
+            <TextView
+                android:id="@+id/tv_show_airtime"
+                style="@style/Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@{tvShow.airDate}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_show_name"
+                tools:text="Aug 10,2015" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/Body2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="@{tvShow.description}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_show_airtime"
+                tools:text="An animated series on adult-swim about the infinite adventures of Rick, a genius alcoholic and careless scientist, with his grandson Morty, a 14 year-old anxious boy who is not so smart. Together, they explore the infinite universes; causing mayhem and running into trouble." />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/public_score"
+                android:src="@drawable/ic_baseline_star_rate_24"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_show_airtime"
+                app:layout_constraintEnd_toStartOf="@+id/tv_show_score"
+                app:layout_constraintTop_toTopOf="@+id/tv_show_airtime" />
+
+            <TextView
+                android:id="@+id/tv_show_score"
+                style="@style/Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@{String.valueOf(tvShow.score)}"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_show_airtime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_show_airtime"
+                tools:text="7.1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
