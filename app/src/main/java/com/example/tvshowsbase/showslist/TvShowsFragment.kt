@@ -147,7 +147,6 @@ class TvShowsFragment : Fragment(),
             object : ConnectivityManager.NetworkCallback() {
                 override fun onLost(network: Network) {
                     super.onLost(network)
-                    showSnackBar(getString(R.string.no_internet_access))
                     noConnection = true
                 }
 
