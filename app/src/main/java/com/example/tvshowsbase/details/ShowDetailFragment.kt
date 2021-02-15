@@ -89,6 +89,7 @@ class ShowDetailFragment : Fragment() {
         viewModel.details.observe(viewLifecycleOwner, {
             it?.let {
                 binding.tvShowDetails = it
+                favCheckObserver()
             }
         })
 
@@ -104,38 +105,38 @@ class ShowDetailFragment : Fragment() {
 
         viewModel.detailsRequest.observe(viewLifecycleOwner, { response ->
             handleResponse(
-                response = response,
-                successAction = {
-                    viewModel.checkFavorite()
-                    favCheckObserver()
-                })
+                response = response, successAction = { favCheckObserver() })
         })
 
         viewModel.castRequest.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {})
+            handleResponse(response = response, successAction = {
+            })
         })
 
         viewModel.favoriteRequest.observe(viewLifecycleOwner, { response ->
             handleResponse(response = response, successAction = {})
         })
+
+        viewModel.favoriteResult.observe(viewLifecycleOwner, {
+            favCheckObserver()
+        })
     }
 
     private fun favCheckObserver() {
-        viewModel.favoriteResult.observe(viewLifecycleOwner, { listShow ->
-            var condition = false
-            listShow.forEach {
-                if (it.showId == viewModel.details.value?.showId) {
-                    condition = true
-                }
+        val listShow = viewModel.favoriteResult.value
+        var condition = false
+        listShow?.forEach {
+            if (it.showId == viewModel.details.value?.showId) {
+                condition = true
             }
-            if (condition) {
-                viewModel.favoriteState = true
-                binding.favIconImage.setImageResource(R.drawable.ic_baseline_favorite_24)
-            } else {
-                viewModel.favoriteState = false
-                binding.favIconImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-        })
+        }
+        if (condition) {
+            viewModel.favoriteState = true
+            binding.favIconImage.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            viewModel.favoriteState = false
+            binding.favIconImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
     }
 
     private fun setNetworkStateCallbacks() {

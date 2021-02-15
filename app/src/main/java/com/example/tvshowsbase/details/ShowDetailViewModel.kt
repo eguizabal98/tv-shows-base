@@ -43,6 +43,10 @@ class ShowDetailViewModel(
 
     lateinit var cast: LiveData<List<Cast>>
 
+    init {
+        checkFavorite()
+    }
+
     fun fetchDetails(showId: Int) {
         viewModelScope.launch {
             _detailsRequest.postValue(WorkState.Loading)

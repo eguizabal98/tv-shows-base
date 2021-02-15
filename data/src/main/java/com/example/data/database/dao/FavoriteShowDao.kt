@@ -10,7 +10,7 @@ import com.example.data.database.entities.FavoriteShowEntity
 @Dao
 interface FavoriteShowDao {
     @Query("SELECT * FROM favorites_table")
-    fun getPopularShows(): LiveData<List<FavoriteShowEntity>>
+    fun getFavoritesShows(): LiveData<List<FavoriteShowEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(data: List<FavoriteShowEntity>)
