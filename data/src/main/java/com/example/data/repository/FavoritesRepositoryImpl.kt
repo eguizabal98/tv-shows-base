@@ -30,7 +30,7 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun getFavoritesShows(): LiveData<List<TvShow>> {
-        val value = favoriteShowDao.getPopularShows()
+        val value = favoriteShowDao.getFavoritesShows()
         return Transformations.map(value) { it.mapFavoriteToShowDomain() }
     }
 

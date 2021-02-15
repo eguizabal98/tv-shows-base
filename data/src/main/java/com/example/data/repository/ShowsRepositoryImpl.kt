@@ -26,7 +26,7 @@ class ShowsRepositoryImpl(
         .setEnablePlaceholders(false)
         .build()
 
-    override fun getPopularShows(): LiveData<PagedList<TvShow>> {
+    override fun getShows(): LiveData<PagedList<TvShow>> {
         val factory: DataSource.Factory<Int, TvShow> =
             dataBase.tvShowDao().getPopularShows().mapByPage { it.mapToShowDomain() }
 

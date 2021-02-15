@@ -84,7 +84,7 @@ fun List<SeasonEntity>.mapSeasonToSeasonDomain(): List<Season> = map {
     Season(
         it.airDate ?: "",
         it.name ?: "",
-        completeUrl(it.posterPath),
+        it.posterPath,
         it.seasonNumber,
         it.episodes?.mapEpisodeToEpisodeDomain()
     )
