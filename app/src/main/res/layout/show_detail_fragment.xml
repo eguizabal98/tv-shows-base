@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="tvShowDetailsViewModel"
-            type="com.example.tvshowsbase.details.ShowDetailViewModel" />
-
-        <variable
             name="tvShowDetails"
             type="com.example.domain.model.ShowDetails" />
     </data>
@@ -41,8 +37,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visibleOrGone="@{tvShowDetailsViewModel.isLoading()}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/scrollView2"
