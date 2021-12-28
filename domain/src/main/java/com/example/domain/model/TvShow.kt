@@ -8,5 +8,5 @@ data class TvShow(
     val posterImage: String?,
     val backDropImage: String?,
     val description: String,
-    val page:Int
+    val page: Int
 )

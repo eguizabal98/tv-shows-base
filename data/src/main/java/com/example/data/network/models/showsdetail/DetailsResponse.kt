@@ -2,7 +2,6 @@ package com.example.data.network.models.showsdetail
 
 import com.google.gson.annotations.SerializedName
 
-
 data class CreatorResponse(
     @SerializedName("id") val creatorId: Int = 0,
     @SerializedName("name") val name: String? = "",
@@ -15,6 +14,3 @@ data class EpisodeResponse(
     @SerializedName("name") val name: String? = "",
     @SerializedName("still_path") val stillPath: String? = ""
 )
-
-
-

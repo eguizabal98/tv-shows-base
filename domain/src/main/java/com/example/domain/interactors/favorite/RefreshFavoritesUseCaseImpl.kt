@@ -1,9 +1,10 @@
 package com.example.domain.interactors.favorite
 
 import com.example.domain.repository.FavoritesRepository
+import javax.inject.Inject
 
-class RefreshFavoritesUseCaseImpl(
-    private val favoritesRepository: FavoritesRepository<Any>
+class RefreshFavoritesUseCaseImpl @Inject constructor(
+    private val favoritesRepository: FavoritesRepository
 ) :
     RefreshFavoritesUseCase {
     override suspend fun refreshFavoritesShows(accountId: Int, sessionId: String, page: Int) =

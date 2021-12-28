@@ -1,7 +1,7 @@
 package com.example.domain.repository
 
-import com.example.domain.model.RequestResult
 import com.example.domain.model.Profile
+import com.example.domain.model.RequestResult
 
 interface AccountRepository {
     suspend fun getAccountDetails(sessionId: String): RequestResult<Profile>

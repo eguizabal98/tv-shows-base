@@ -108,7 +108,6 @@ class ItemBoundaryCallBack(
             AIRING_TODAY -> tvShowsAPI.getAiringTodayShows(page = page)
         }
 
-
     private fun exceptionHandler(e: Exception): RequestResult<Boolean> {
         return when (e) {
             is HttpException -> {
@@ -130,5 +129,4 @@ class ItemBoundaryCallBack(
             else -> RequestResult.Failure(Error(null, InternalErrorCodes.NOT_SPECIFIC))
         }
     }
-
 }

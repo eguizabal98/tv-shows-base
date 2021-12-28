@@ -10,4 +10,3 @@ data class CreditsEntity(
     @PrimaryKey @SerializedName("id") val creditsId: Int = 0,
     @SerializedName("cast") val castItems: List<CastResponse>
 )
-

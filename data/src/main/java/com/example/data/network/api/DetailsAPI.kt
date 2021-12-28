@@ -2,8 +2,8 @@ package com.example.data.network.api
 
 import com.example.data.database.entities.CreditsEntity
 import com.example.data.database.entities.ShowDetailEntity
-import com.example.data.di.API_KEY
-import com.example.data.di.LANGUAGE
+import com.example.data.di.NetworkingModule.API_KEY
+import com.example.data.di.NetworkingModule.LANGUAGE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

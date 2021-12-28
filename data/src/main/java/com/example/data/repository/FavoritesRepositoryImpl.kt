@@ -5,28 +5,37 @@ import androidx.lifecycle.Transformations
 import com.example.data.database.dao.FavoriteShowDao
 import com.example.data.network.api.FavoritesAPI
 import com.example.data.network.models.showsdetail.FavoriteRequestBody
+import com.example.data.util.Connectivity
 import com.example.data.util.mapFavoriteToShowDomain
 import com.example.domain.model.RequestResult
 import com.example.domain.model.TvShow
 import com.example.domain.repository.FavoritesRepository
+import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class FavoritesRepositoryImpl(
+class FavoritesRepositoryImpl @Inject constructor(
     private val favoritesAPI: FavoritesAPI,
-    private val favoriteShowDao: FavoriteShowDao
+    private val favoriteShowDao: FavoriteShowDao,
+    connectivity: Connectivity,
+    scope: CoroutineScope
 ) :
-    FavoritesRepository<LiveData<List<TvShow>>>, BaseRepository() {
+    FavoritesRepository, BaseRepository(connectivity, scope) {
 
     override suspend fun refreshFavoritesShows(
         accountId: Int,
         sessionId: String,
         page: Int
     ): RequestResult<Boolean> {
-        return fetchData(apiAction = {
-            favoritesAPI.getFavorites(accountId = accountId, sessionId = sessionId, page = page)
-        }, dbAction = {
-            favoriteShowDao.clearBase()
-            favoriteShowDao.insert(it.items)
-        }, returnAction = { RequestResult.Success(true) })
+        return fetchData(
+            apiAction = {
+                favoritesAPI.getFavorites(accountId = accountId, sessionId = sessionId, page = page)
+            },
+            dbAction = {
+                favoriteShowDao.clearBase()
+                favoriteShowDao.insert(it.items)
+            },
+            returnAction = { RequestResult.Success(true) }
+        )
     }
 
     override suspend fun getFavoritesShows(): LiveData<List<TvShow>> {
@@ -40,18 +49,22 @@ class FavoritesRepositoryImpl(
         sessionId: String,
         accountId: Int
     ): RequestResult<Boolean> {
-        return fetchData(apiAction = {
-            favoritesAPI.makeFavorite(
-                accountId = accountId,
-                sessionId = sessionId,
-                favoriteRequestBody = FavoriteRequestBody(mediaId = showId, favorite = favorite)
-            )
-        }, dbAction = {
-            return@fetchData if (!favorite) {
-                favoriteShowDao.delete(showId)
-            } else {
-                refreshFavoritesShows(accountId, sessionId, 1)
-            }
-        }, returnAction = { RequestResult.Success(favorite) })
+        return fetchData(
+            apiAction = {
+                favoritesAPI.makeFavorite(
+                    accountId = accountId,
+                    sessionId = sessionId,
+                    favoriteRequestBody = FavoriteRequestBody(mediaId = showId, favorite = favorite)
+                )
+            },
+            dbAction = {
+                return@fetchData if (!favorite) {
+                    favoriteShowDao.delete(showId)
+                } else {
+                    refreshFavoritesShows(accountId, sessionId, 1)
+                }
+            },
+            returnAction = { RequestResult.Success(favorite) }
+        )
     }
 }

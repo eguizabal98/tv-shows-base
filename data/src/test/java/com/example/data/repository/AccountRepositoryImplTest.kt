@@ -1,18 +1,14 @@
 package com.example.data.repository
 
 import com.example.data.BaseTestData
-import com.example.data.database.dao.AccountDao
 import com.example.data.mockProfile
-import com.example.data.network.api.AuthAPI
 import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.RequestResult
 import com.example.domain.repository.AccountRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.`is`
-
 import org.junit.Assert.*
 import org.junit.Test
 import org.koin.test.KoinTest
@@ -52,5 +48,4 @@ class AccountRepositoryImplTest : BaseTestData(), KoinTest {
 
         MatcherAssert.assertThat((responseA as RequestResult.Failure).error.errorCode, `is`(profileExpected.error.errorCode))
     }
-
 }

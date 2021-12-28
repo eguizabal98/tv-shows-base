@@ -32,7 +32,6 @@ fun List<CastResponse>.mapToCastDomain(): List<Cast> = map {
     it.mapToCastDomain()
 }
 
-
 fun ShowDetailEntity.mapToShowDetailsDomain(): ShowDetails =
     ShowDetails(
         showId,
@@ -89,7 +88,6 @@ fun List<SeasonEntity>.mapSeasonToSeasonDomain(): List<Season> = map {
         it.episodes?.mapEpisodeToEpisodeDomain()
     )
 }
-
 
 fun SeasonEntity.mapSeasonToRoom(showId: Int): SeasonEntity =
     SeasonEntity(

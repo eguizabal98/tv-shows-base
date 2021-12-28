@@ -1,8 +1,11 @@
 package com.example.domain.interactors.favorite
 
+import androidx.lifecycle.LiveData
+import com.example.domain.model.TvShow
 import com.example.domain.repository.FavoritesRepository
+import javax.inject.Inject
 
-class GetFavoritesUseCaseImpl<T : Any>(private val favoritesRepository: FavoritesRepository<T>) :
-    GetFavoritesUseCase<T> {
-    override suspend fun getFavoriteShows(): T = favoritesRepository.getFavoritesShows()
+class GetFavoritesUseCaseImpl @Inject constructor(private val favoritesRepository: FavoritesRepository) :
+    GetFavoritesUseCase {
+    override suspend fun getFavoriteShows(): LiveData<List<TvShow>> = favoritesRepository.getFavoritesShows()
 }

@@ -5,21 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.detail.FetchCastListUseCase
-import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.FetchDetailsUseCase
+import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetDetailsUseCase
 import com.example.domain.interactors.favorite.GetFavoritesUseCase
 import com.example.domain.interactors.favorite.PutFavoriteUseCase
 import com.example.domain.model.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShowDetailViewModel(
+@HiltViewModel
+class ShowDetailViewModel @Inject constructor(
     private val fetchDetailsUseCase: FetchDetailsUseCase,
     private val fetchCastListUseCase: FetchCastListUseCase,
     private val putFavoriteUseCase: PutFavoriteUseCase,
-    private val getFavoritesUseCase: GetFavoritesUseCase<LiveData<List<TvShow>>>,
-    private val getCreditsUseCase: GetCreditsUseCase<LiveData<List<Cast>>>,
-    private val getDetailsUseCase: GetDetailsUseCase<LiveData<ShowDetails>>
+    private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val getCreditsUseCase: GetCreditsUseCase,
+    private val getDetailsUseCase: GetDetailsUseCase
 ) :
     ViewModel() {
 
@@ -109,10 +112,9 @@ class ShowDetailViewModel(
         }
     }
 
-    fun checkFavorite() {
+    private fun checkFavorite() {
         viewModelScope.launch {
             favoriteResult = getFavoritesUseCase.getFavoriteShows()
         }
     }
-
 }

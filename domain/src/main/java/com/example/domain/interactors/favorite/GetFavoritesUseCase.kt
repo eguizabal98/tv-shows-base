@@ -1,5 +1,8 @@
 package com.example.domain.interactors.favorite
 
-interface GetFavoritesUseCase<out T> {
-    suspend fun getFavoriteShows(): T
+import androidx.lifecycle.LiveData
+import com.example.domain.model.TvShow
+
+interface GetFavoritesUseCase {
+    suspend fun getFavoriteShows(): LiveData<List<TvShow>>
 }

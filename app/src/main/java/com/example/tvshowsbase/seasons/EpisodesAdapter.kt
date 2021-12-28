@@ -38,5 +38,4 @@ class EpisodesAdapter : ListAdapter<Episode, EpisodesAdapter.EpisodeViewHolder>(
                 oldItem == newItem
         }
     }
-
 }

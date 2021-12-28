@@ -10,7 +10,6 @@ import com.example.domain.repository.FavoritesRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-
 import org.junit.Assert.*
 import org.junit.Test
 import org.koin.test.inject
@@ -20,7 +19,7 @@ class FavoritesRepositoryImplTest : BaseTestData() {
 
     private val favoritesRepository: FavoritesRepository<LiveData<List<TvShow>>> by inject()
 
-    //Test refreshFavoritesShows
+    // Test refreshFavoritesShows
     @Test
     fun `test refreshFavoritesShows call API and return success favorites`() = runBlocking {
         mockNetworkResponseWithFileContent("favorites_response.json", HttpURLConnection.HTTP_OK)
@@ -61,5 +60,4 @@ class FavoritesRepositoryImplTest : BaseTestData() {
             Matchers.`is`(responseExpected.error.errorCode)
         )
     }
-
 }

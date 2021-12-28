@@ -20,5 +20,4 @@ val databaseTestModule = module {
     factory { get<DataBase>().detailsDao() }
     factory { get<DataBase>().creditsDao() }
     factory { get<DataBase>().seasonDao() }
-
 }

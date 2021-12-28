@@ -39,4 +39,3 @@ class CastListAdapter : ListAdapter<Cast, CastListAdapter.CastViewHolder>(DIFF_C
         }
     }
 }
-

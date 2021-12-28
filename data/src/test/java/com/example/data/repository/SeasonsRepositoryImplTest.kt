@@ -10,7 +10,6 @@ import com.example.domain.repository.SeasonsRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-
 import org.junit.Assert.*
 import org.junit.Test
 import org.koin.test.inject
@@ -20,7 +19,7 @@ class SeasonsRepositoryImplTest : BaseTestData() {
 
     private val seasonsRepository: SeasonsRepository<LiveData<List<Season>>> by inject()
 
-    //Test fetchSeasons
+    // Test fetchSeasons
     @Test
     fun `test fetchSeasons call API and return success seasons`() = runBlocking {
         mockNetworkResponseWithFileContent("season_wanda_1.json", HttpURLConnection.HTTP_OK)
@@ -58,5 +57,4 @@ class SeasonsRepositoryImplTest : BaseTestData() {
             Matchers.`is`(responseExpected.error.errorCode)
         )
     }
-
 }

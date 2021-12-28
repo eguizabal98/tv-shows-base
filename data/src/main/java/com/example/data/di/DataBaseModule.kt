@@ -1,31 +1,64 @@
 package com.example.data.di
 
+import android.content.Context
 import androidx.room.Room
 import com.example.data.database.DataBase
+import com.example.data.database.dao.AccountDao
+import com.example.data.database.dao.CreditsDao
+import com.example.data.database.dao.DetailDao
+import com.example.data.database.dao.FavoriteShowDao
+import com.example.data.database.dao.SeasonDao
+import com.example.data.database.dao.TvShowDao
+import com.example.data.network.api.TvShowsAPI
 import com.example.data.paging.ItemBoundaryCallBack
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+import javax.inject.Singleton
 
-const val DB_NAME = "TvShowsDb"
+@Module
+@InstallIn(SingletonComponent::class)
+object DataBaseModule {
 
-val dataBaseModule = module {
-    single {
-        Room.databaseBuilder(androidContext(), DataBase::class.java, DB_NAME)
+    private const val DB_NAME = "TvShowsDb"
+
+    @Singleton
+    @Provides
+    fun provideDataBase(@ApplicationContext context: Context): DataBase =
+        Room.databaseBuilder(context, DataBase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
             .build()
-    }
-    factory { get<DataBase>().tvShowDao() }
-    factory { get<DataBase>().favoriteShowDao() }
-    factory { get<DataBase>().accountDao() }
-    factory { get<DataBase>().detailsDao() }
-    factory { get<DataBase>().creditsDao() }
-    factory { get<DataBase>().seasonDao() }
 
-    single {
-        ItemBoundaryCallBack(tvShowsAPI = get(), dataBase = get(), scope = get())
-    }
+    @Provides
+    fun provideTvShowDao(dataBase: DataBase): TvShowDao = dataBase.tvShowDao()
 
-    factory { CoroutineScope(Dispatchers.IO) }
+    @Provides
+    fun provideFavoriteShowDao(dataBase: DataBase): FavoriteShowDao = dataBase.favoriteShowDao()
+
+    @Provides
+    fun provideAccountDao(dataBase: DataBase): AccountDao = dataBase.accountDao()
+
+    @Provides
+    fun provideDetailsDao(dataBase: DataBase): DetailDao = dataBase.detailsDao()
+
+    @Provides
+    fun provideCreditsDao(dataBase: DataBase): CreditsDao = dataBase.creditsDao()
+
+    @Provides
+    fun provideSeasonDao(dataBase: DataBase): SeasonDao = dataBase.seasonDao()
+
+    @Provides
+    fun provideItemBoundaryCallBack(
+        tvShowsAPI: TvShowsAPI,
+        dataBase: DataBase,
+        scope: CoroutineScope
+    ): ItemBoundaryCallBack =
+        ItemBoundaryCallBack(tvShowsAPI, dataBase, scope)
+
+    @Provides
+    fun provideCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO)
 }

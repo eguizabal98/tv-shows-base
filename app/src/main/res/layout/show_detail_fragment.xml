@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="tvShowDetailsViewModel"
+            type="com.example.tvshowsbase.details.ShowDetailViewModel" />
+
+        <variable
             name="tvShowDetails"
             type="com.example.domain.model.ShowDetails" />
     </data>
@@ -37,7 +41,8 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleOrGone="@{tvShowDetailsViewModel.isLoading()}" />
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -142,10 +147,10 @@
 
                 <TextView
                     android:id="@+id/created_by_text"
+                    style="@style/Subtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    style="@style/Subtitle1"
                     android:text="@{tvShowDetails.creators}"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -165,12 +170,12 @@
 
                 <TextView
                     android:id="@+id/cast_show_text"
+                    style="@style/Headline6"
                     android:layout_width="107dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/cast"
-                    style="@style/Headline6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/poster_show_image"
                     tools:text="Cast" />

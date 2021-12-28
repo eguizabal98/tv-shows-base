@@ -4,17 +4,15 @@ import com.example.data.util.Connectivity
 import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.RequestResult
+import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import retrofit2.HttpException
-import java.io.IOException
 
-abstract class BaseRepository : KoinComponent {
-
-    private val connectivity: Connectivity by inject()
-    private val scope: CoroutineScope by inject()
+abstract class BaseRepository(
+    private val connectivity: Connectivity,
+    private val scope: CoroutineScope
+) {
 
     protected suspend fun <T : Any, R : Any, U : Any> fetchData(
         apiAction: suspend () -> T,
@@ -78,5 +76,4 @@ abstract class BaseRepository : KoinComponent {
             else -> RequestResult.Failure(Error(null, InternalErrorCodes.NOT_SPECIFIC))
         }
     }
-
 }

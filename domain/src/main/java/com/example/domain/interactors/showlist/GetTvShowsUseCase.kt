@@ -1,5 +1,9 @@
 package com.example.domain.interactors.showlist
 
-interface GetTvShowsUseCase<out T> {
-    fun getShows(): T
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import com.example.domain.model.TvShow
+
+interface GetTvShowsUseCase {
+    fun getShows(): LiveData<PagedList<TvShow>>
 }

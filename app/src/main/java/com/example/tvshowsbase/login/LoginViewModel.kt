@@ -9,9 +9,12 @@ import com.example.domain.interactors.login.GetAuthTokenUseCase
 import com.example.domain.interactors.login.GetSessionIdUseCase
 import com.example.domain.model.RequestResult
 import com.example.domain.model.WorkState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val getAuthTokenUseCase: GetAuthTokenUseCase,
     private val getSessionIdUseCase: GetSessionIdUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase
@@ -68,5 +71,4 @@ class LoginViewModel(
             }
         }
     }
-
 }

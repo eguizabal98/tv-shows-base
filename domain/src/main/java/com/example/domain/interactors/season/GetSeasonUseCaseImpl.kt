@@ -1,8 +1,11 @@
 package com.example.domain.interactors.season
 
+import androidx.lifecycle.LiveData
+import com.example.domain.model.Season
 import com.example.domain.repository.SeasonsRepository
+import javax.inject.Inject
 
-class GetSeasonUseCaseImpl<out T>(private val seasonsRepository: SeasonsRepository<T>) :
-    GetSeasonUseCase<T> {
-    override suspend fun getSeasons(showsId: Int): T = seasonsRepository.getSeasons(showsId)
+class GetSeasonUseCaseImpl @Inject constructor(private val seasonsRepository: SeasonsRepository) :
+    GetSeasonUseCase {
+    override suspend fun getSeasons(showsId: Int): LiveData<List<Season>> = seasonsRepository.getSeasons(showsId)
 }

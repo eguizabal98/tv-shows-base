@@ -7,15 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.account.FetchAccountUseCase
 import com.example.domain.interactors.account.GetAccountUseCase
 import com.example.domain.interactors.favorite.GetFavoritesUseCase
-import com.example.domain.model.RequestResult
 import com.example.domain.model.Profile
+import com.example.domain.model.RequestResult
 import com.example.domain.model.TvShow
 import com.example.domain.model.WorkState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel(
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
     private val getAccountUseCase: GetAccountUseCase,
-    private val getFavoritesUseCase: GetFavoritesUseCase<LiveData<List<TvShow>>>,
+    private val getFavoritesUseCase: GetFavoritesUseCase,
     private val fetchAccountUseCase: FetchAccountUseCase
 ) : ViewModel() {
 
@@ -62,5 +65,4 @@ class ProfileViewModel(
             favoriteResult = getFavoritesUseCase.getFavoriteShows()
         }
     }
-
 }

@@ -2,14 +2,17 @@ package com.example.data.repository
 
 import com.example.data.database.dao.AccountDao
 import com.example.data.network.api.AuthAPI
+import com.example.data.util.Connectivity
 import com.example.data.util.mapToProfileDomain
 import com.example.domain.model.Profile
 import com.example.domain.model.RequestResult
 import com.example.domain.repository.AccountRepository
+import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class AccountRepositoryImpl(private val accountDao: AccountDao, private val authAPI: AuthAPI) :
+class AccountRepositoryImpl @Inject constructor(private val accountDao: AccountDao, private val authAPI: AuthAPI, connectivity: Connectivity, scope: CoroutineScope) :
     AccountRepository,
-    BaseRepository() {
+    BaseRepository(connectivity, scope) {
 
     override suspend fun getAccountDetails(sessionId: String): RequestResult<Profile> {
         val response = accountDao.getAccount()
@@ -26,6 +29,7 @@ class AccountRepositoryImpl(private val accountDao: AccountDao, private val auth
             },
             returnAction = {
                 RequestResult.Success(accountDao.getAccount().mapToProfileDomain())
-            })
+            }
+        )
     }
 }

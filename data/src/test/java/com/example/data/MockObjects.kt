@@ -107,7 +107,6 @@ val mockSessionId = "752f3e6f9ae0ce07a73a3fc62ece4c7ac31d69a4"
 val mockaccountId = 10067198
 val mockShowId = 85271
 
-
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
 fun <T> LiveData<T>.getOrAwaitValue(
     time: Long = 2,
@@ -132,7 +131,6 @@ fun <T> LiveData<T>.getOrAwaitValue(
         if (!latch.await(time, timeUnit)) {
             throw TimeoutException("LiveData value was never set.")
         }
-
     } finally {
         this.removeObserver(observer)
     }

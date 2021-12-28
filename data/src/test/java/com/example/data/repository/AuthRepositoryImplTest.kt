@@ -12,7 +12,6 @@ import com.example.domain.repository.AuthRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers.`is`
-
 import org.junit.Test
 import org.koin.test.inject
 import java.net.HttpURLConnection
@@ -24,7 +23,7 @@ class AuthRepositoryImplTest : BaseTestData() {
     private val favoriteShowDao: FavoriteShowDao by inject()
     private val tvShowDao: TvShowDao by inject()
 
-    //Test getAuthToken
+    // Test getAuthToken
     @Test
     fun `test getAuthToken call API and return success token`() = runBlocking {
         mockNetworkResponseWithFileContent("request_token.json", HttpURLConnection.HTTP_OK)
@@ -59,7 +58,7 @@ class AuthRepositoryImplTest : BaseTestData() {
         )
     }
 
-    //Test getSessionId
+    // Test getSessionId
     @Test
     fun `test getSessionId call API and return success sessionId`() = runBlocking {
         mockNetworkResponseWithFileContent("session_request.json", HttpURLConnection.HTTP_OK)
@@ -94,7 +93,7 @@ class AuthRepositoryImplTest : BaseTestData() {
         )
     }
 
-    //Test getAccount
+    // Test getAccount
     @Test
     fun `test getAccount call API and return success account`() = runBlocking {
         mockNetworkResponseWithFileContent("account_request.json", HttpURLConnection.HTTP_OK)
@@ -133,7 +132,7 @@ class AuthRepositoryImplTest : BaseTestData() {
         )
     }
 
-    //Test logOutAccount
+    // Test logOutAccount
     @Test
     fun `test logOutAccount call API and return success logout flow`() = runBlocking {
         mockNetworkResponseWithFileContent("general_response.json", HttpURLConnection.HTTP_OK)

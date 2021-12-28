@@ -1,8 +1,9 @@
 package com.example.domain.interactors.favorite
 
 import com.example.domain.repository.FavoritesRepository
+import javax.inject.Inject
 
-class PutFavoriteUseCaseImpl(private val favoritesRepository: FavoritesRepository<Any>) :
+class PutFavoriteUseCaseImpl @Inject constructor(private val favoritesRepository: FavoritesRepository) :
     PutFavoriteUseCase {
     override suspend fun putShowFavorite(
         favorite: Boolean,

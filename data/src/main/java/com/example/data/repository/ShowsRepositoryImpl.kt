@@ -10,14 +10,12 @@ import com.example.data.util.mapToShowDomain
 import com.example.domain.model.FilterType
 import com.example.domain.model.TvShow
 import com.example.domain.repository.ShowsRepository
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
-class ShowsRepositoryImpl(
-    private val dataBase: DataBase
-) : ShowsRepository<LiveData<PagedList<TvShow>>>, KoinComponent {
-
-    private val itemBoundaryCallBack: ItemBoundaryCallBack by inject()
+class ShowsRepositoryImpl @Inject constructor(
+    private val dataBase: DataBase,
+    private val itemBoundaryCallBack: ItemBoundaryCallBack
+) : ShowsRepository {
 
     private val config = PagedList.Config.Builder()
         .setPageSize(NETWORK_PAGE_SIZE)
@@ -46,5 +44,4 @@ class ShowsRepositoryImpl(
         const val NETWORK_PAGE_SIZE = 20
         const val HINT_HINT = 20
     }
-
 }

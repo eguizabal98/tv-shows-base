@@ -11,10 +11,13 @@ import com.example.domain.model.FilterType
 import com.example.domain.model.RequestResult
 import com.example.domain.model.TvShow
 import com.example.domain.model.WorkState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TvShowsViewModel(
-    getTvShowsUseCase: GetTvShowsUseCase<LiveData<PagedList<TvShow>>>,
+@HiltViewModel
+class TvShowsViewModel @Inject constructor(
+    getTvShowsUseCase: GetTvShowsUseCase,
     private val refreshFavoritesUseCase: RefreshFavoritesUseCase,
     private val logOutUseCase: LogOutUseCase,
     private val changeFilterUseCase: ChangeFilterUseCase,
@@ -61,5 +64,4 @@ class TvShowsViewModel(
             }
         }
     }
-
 }

@@ -3,7 +3,6 @@ package com.example.tvshowsbase.login
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.domain.model.InternalErrorCodes
@@ -21,18 +21,20 @@ import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.LoginFragmentBinding
 import com.example.tvshowsbase.databindingutils.visible
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    private val viewModel: LoginViewModel by viewModel()
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: LoginFragmentBinding
-    private val sharedPreferences: SharedPreferences by inject()
+    @Inject lateinit var sharedPreferences: SharedPreferences
     private val args: LoginFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false)
@@ -49,7 +51,8 @@ class LoginFragment : Fragment() {
                         activity?.onBackPressed()
                     }
                 }
-            })
+            }
+        )
 
         return binding.root
     }
@@ -80,33 +83,51 @@ class LoginFragment : Fragment() {
     }
 
     private fun createViewModelObservers() {
-        viewModel.authTokeState.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {
-                viewModel.tokenTemp = it
-                binding.loginWebView.loadUrl("$WEB_VIEW_URL${viewModel.tokenTemp}")
-                updateUIChangeToWebView()
-            })
-        })
+        viewModel.authTokeState.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(
+                    response = response,
+                    successAction = {
+                        viewModel.tokenTemp = it
+                        binding.loginWebView.loadUrl("$WEB_VIEW_URL${viewModel.tokenTemp}")
+                        updateUIChangeToWebView()
+                    }
+                )
+            }
+        )
 
-        viewModel.sessionIdState.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {
-                sharedPreferences.edit {
-                    putString(SESSION_KEY, it)
-                    apply()
-                }
-                checkCredentials()
-            })
-        })
+        viewModel.sessionIdState.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(
+                    response = response,
+                    successAction = {
+                        sharedPreferences.edit {
+                            putString(SESSION_KEY, it)
+                            apply()
+                        }
+                        checkCredentials()
+                    }
+                )
+            }
+        )
 
-        viewModel.accountIdState.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {
-                sharedPreferences.edit {
-                    putInt(ACCOUNT_KEY, it)
-                    apply()
-                }
-                checkCredentials()
-            })
-        })
+        viewModel.accountIdState.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(
+                    response = response,
+                    successAction = {
+                        sharedPreferences.edit {
+                            putInt(ACCOUNT_KEY, it)
+                            apply()
+                        }
+                        checkCredentials()
+                    }
+                )
+            }
+        )
     }
 
     private val webClient = object : WebViewClient() {

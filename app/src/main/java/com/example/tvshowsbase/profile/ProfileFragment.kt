@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.data.util.Connectivity
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.WorkState
@@ -16,19 +17,22 @@ import com.example.tvshowsbase.R
 import com.example.tvshowsbase.databinding.ProfileFragmentBinding
 import com.example.tvshowsbase.login.LoginFragment.Companion.SESSION_KEY
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
-    private val viewModel: ProfileViewModel by inject()
+    private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: ProfileFragmentBinding
-    private val sharedPreferences: SharedPreferences by inject()
+    @Inject lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: FavoritesAdapter
-    private val connectivityManager: Connectivity by inject()
+    @Inject lateinit var connectivityManager: Connectivity
     private var noConnection = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = ProfileFragmentBinding.inflate(inflater)
@@ -47,22 +51,32 @@ class ProfileFragment : Fragment() {
     }
 
     private fun createViewModelObservers() {
-        viewModel.account.observe(viewLifecycleOwner, { profile ->
-            handleResponse(response = profile, successAction = {
-                binding.profile = it
-            })
-        })
+        viewModel.account.observe(
+            viewLifecycleOwner,
+            { profile ->
+                handleResponse(
+                    response = profile,
+                    successAction = {
+                        binding.profile = it
+                    }
+                )
+            }
+        )
 
-        viewModel.favoriteResult.observe(viewLifecycleOwner, { listShow ->
-            adapter.submitList(listShow)
-        })
+        viewModel.favoriteResult.observe(
+            viewLifecycleOwner,
+            { listShow ->
+                adapter.submitList(listShow)
+            }
+        )
     }
 
     private fun setNetworkStateCallbacks() {
         if (!connectivityManager.hasNetworkAccess()) noConnection = true
 
         val request = NetworkRequest.Builder().build()
-        connectivityManager.getConnectivityManager().registerNetworkCallback(request,
+        connectivityManager.getConnectivityManager().registerNetworkCallback(
+            request,
             object : ConnectivityManager.NetworkCallback() {
 
                 override fun onLost(network: Network) {
@@ -78,7 +92,8 @@ class ProfileFragment : Fragment() {
                         viewModel.getAccount(session)
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun <T : Any> handleResponse(response: WorkState<T>, successAction: (T) -> Unit) {
@@ -120,5 +135,4 @@ class ProfileFragment : Fragment() {
     private fun showMessage(message: String) {
         Snackbar.make(binding.scrollViewProfile, message, Snackbar.LENGTH_SHORT).show()
     }
-
 }

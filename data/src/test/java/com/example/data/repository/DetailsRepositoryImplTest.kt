@@ -2,16 +2,11 @@ package com.example.data.repository
 
 import androidx.lifecycle.LiveData
 import com.example.data.*
-import com.example.data.database.dao.CreditsDao
-import com.example.data.database.dao.DetailDao
-import com.example.data.network.api.DetailsAPI
-import com.example.data.util.mapToShowDetailsDomain
 import com.example.domain.model.*
 import com.example.domain.repository.DetailsRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-
 import org.junit.Assert.*
 import org.junit.Test
 import org.koin.test.inject
@@ -21,7 +16,7 @@ class DetailsRepositoryImplTest : BaseTestData() {
 
     private val detailsRepository: DetailsRepository<LiveData<List<Cast>>, LiveData<ShowDetails>> by inject()
 
-    //Test fetchDetails
+    // Test fetchDetails
     @Test
     fun `test fetchDetails call API and return success details`() = runBlocking {
         mockNetworkResponseWithFileContent("detail_wandavision.json", HttpURLConnection.HTTP_OK)
@@ -60,7 +55,7 @@ class DetailsRepositoryImplTest : BaseTestData() {
         )
     }
 
-    //Test fetchCredits
+    // Test fetchCredits
     @Test
     fun `test fetchCredits call API and return success credits`() = runBlocking {
         mockNetworkResponseWithFileContent("credits_wandavision.json", HttpURLConnection.HTTP_OK)
@@ -98,5 +93,4 @@ class DetailsRepositoryImplTest : BaseTestData() {
             Matchers.`is`(responseExpected.error.errorCode)
         )
     }
-
 }

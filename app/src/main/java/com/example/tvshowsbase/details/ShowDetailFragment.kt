@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.data.util.Connectivity
@@ -20,24 +21,29 @@ import com.example.tvshowsbase.databindingutils.visible
 import com.example.tvshowsbase.login.LoginFragment.Companion.ACCOUNT_KEY
 import com.example.tvshowsbase.login.LoginFragment.Companion.SESSION_KEY
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ShowDetailFragment : Fragment() {
 
-    private val viewModel: ShowDetailViewModel by viewModel()
+    private val viewModel: ShowDetailViewModel by viewModels()
     private lateinit var binding: ShowDetailFragmentBinding
     private var castListAdapter: CastListAdapter? = null
-    private val connectivityManager: Connectivity by inject()
+
+    @Inject
+    lateinit var connectivityManager: Connectivity
     private var noConnection = false
 
     private val args: ShowDetailFragmentArgs by navArgs()
 
-    private val sharedPreferences: SharedPreferences by inject()
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = ShowDetailFragmentBinding.inflate(inflater)
@@ -86,40 +92,61 @@ class ShowDetailFragment : Fragment() {
     }
 
     private fun createViewModelObservers() {
-        viewModel.details.observe(viewLifecycleOwner, {
-            it?.let {
-                binding.tvShowDetails = it
-                favCheckObserver()
-            }
-        })
-
-        viewModel.cast.observe(viewLifecycleOwner, {
-            it?.let {
-                castListAdapter?.submitList(it)
-                if (it.isEmpty()) {
-                    binding.emptyCast.visibility = View.VISIBLE
+        viewModel.details.observe(
+            viewLifecycleOwner,
+            {
+                it?.let {
+                    binding.tvShowDetails = it
+                    favCheckObserver()
                 }
             }
+        )
 
-        })
+        viewModel.cast.observe(
+            viewLifecycleOwner,
+            {
+                it?.let {
+                    castListAdapter?.submitList(it)
+                    if (it.isEmpty()) {
+                        binding.emptyCast.visibility = View.VISIBLE
+                    }
+                }
+            }
+        )
 
-        viewModel.detailsRequest.observe(viewLifecycleOwner, { response ->
-            handleResponse(
-                response = response, successAction = { favCheckObserver() })
-        })
+        viewModel.detailsRequest.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(
+                    response = response, successAction = { favCheckObserver() }
+                )
+            }
+        )
 
-        viewModel.castRequest.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {
-            })
-        })
+        viewModel.castRequest.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(
+                    response = response,
+                    successAction = {
+                    }
+                )
+            }
+        )
 
-        viewModel.favoriteRequest.observe(viewLifecycleOwner, { response ->
-            handleResponse(response = response, successAction = {})
-        })
+        viewModel.favoriteRequest.observe(
+            viewLifecycleOwner,
+            { response ->
+                handleResponse(response = response, successAction = {})
+            }
+        )
 
-        viewModel.favoriteResult.observe(viewLifecycleOwner, {
-            favCheckObserver()
-        })
+        viewModel.favoriteResult.observe(
+            viewLifecycleOwner,
+            {
+                favCheckObserver()
+            }
+        )
     }
 
     private fun favCheckObserver() {
@@ -146,7 +173,8 @@ class ShowDetailFragment : Fragment() {
         }
 
         val request = NetworkRequest.Builder().build()
-        connectivityManager.getConnectivityManager().registerNetworkCallback(request,
+        connectivityManager.getConnectivityManager().registerNetworkCallback(
+            request,
             object : ConnectivityManager.NetworkCallback() {
 
                 override fun onLost(network: Network) {
@@ -162,7 +190,8 @@ class ShowDetailFragment : Fragment() {
                         viewModel.fetchCast(args.showId)
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun <T : Any> handleResponse(response: WorkState<T>, successAction: (T) -> Unit) {
@@ -204,5 +233,4 @@ class ShowDetailFragment : Fragment() {
     private fun showMessage(message: String) {
         Snackbar.make(binding.detailsConstrain, message, Snackbar.LENGTH_SHORT).show()
     }
-
 }

@@ -1,8 +1,8 @@
 package com.example.data.network.api
 
+import com.example.data.di.NetworkingModule.API_KEY
+import com.example.data.di.NetworkingModule.LANGUAGE
 import com.example.data.network.models.showslist.TvShowsResult
-import com.example.data.di.API_KEY
-import com.example.data.di.LANGUAGE
 import retrofit2.http.GET
 import retrofit2.http.Query
 

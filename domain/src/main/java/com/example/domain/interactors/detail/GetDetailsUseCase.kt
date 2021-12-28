@@ -1,5 +1,8 @@
 package com.example.domain.interactors.detail
 
-interface GetDetailsUseCase<out R> {
-    suspend fun getDetails(showId: Int): R
+import androidx.lifecycle.LiveData
+import com.example.domain.model.ShowDetails
+
+interface GetDetailsUseCase {
+    suspend fun getDetails(showId: Int): LiveData<ShowDetails>
 }

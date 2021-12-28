@@ -25,7 +25,6 @@ fun ImageView.setImageUrlProfile(Url: String?) {
                 .error(R.drawable.ic_baseline_account_circle_24)
         )
         .into(this)
-
 }
 
 @BindingAdapter("app:imageUrlShow")

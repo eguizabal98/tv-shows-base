@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.data.util.Connectivity
 import com.example.domain.model.FilterType
@@ -22,24 +23,25 @@ import com.example.tvshowsbase.databinding.TvShowsFragmentBinding
 import com.example.tvshowsbase.login.LoginFragment.Companion.ACCOUNT_KEY
 import com.example.tvshowsbase.login.LoginFragment.Companion.SESSION_KEY
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
-class TvShowsFragment : Fragment(),
+@AndroidEntryPoint
+class TvShowsFragment :
+    Fragment(),
     TvShowsAdapter.ItemClickListener {
 
-    private val viewModel: TvShowsViewModel by viewModel()
-    private val sharedPreferences: SharedPreferences by inject()
-    private val connectivityManager: Connectivity by inject()
+    private val viewModel: TvShowsViewModel by viewModels()
+    @Inject lateinit var sharedPreferences: SharedPreferences
+    @Inject lateinit var connectivityManager: Connectivity
 
     private lateinit var binding: TvShowsFragmentBinding
     private var tvShowsAdapter: TvShowsAdapter? = null
     private var noConnection = false
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = TvShowsFragmentBinding.inflate(inflater)
@@ -66,7 +68,6 @@ class TvShowsFragment : Fragment(),
         viewModel.getFavorites(accountId, sessionId, 1)
     }
 
-
     private fun setLastFilterPosition() {
         val lastFilterPosition = sharedPreferences.getInt("filter", 0)
 
@@ -88,7 +89,6 @@ class TvShowsFragment : Fragment(),
         binding.filterSpinner.setSelection(lastFilterPosition)
     }
 
-
     private fun createBindingObservers() {
         binding.filterSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -103,7 +103,6 @@ class TvShowsFragment : Fragment(),
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
-
             }
 
         binding.toolbar.setOnMenuItemClickListener {
@@ -125,25 +124,35 @@ class TvShowsFragment : Fragment(),
     }
 
     private fun createViewModelObservers() {
-        viewModel.showsList.observe(viewLifecycleOwner, {
-            it?.let { tvShowsAdapter?.submitList(it) }
-        })
+        viewModel.showsList.observe(
+            viewLifecycleOwner,
+            {
+                it?.let { tvShowsAdapter?.submitList(it) }
+            }
+        )
 
-        viewModel.logOutState.observe(viewLifecycleOwner, {
-            handleResponse(response = it, successAction = {
-                sharedPreferences.edit().clear().apply()
-                findNavController().navigate(
-                    TvShowsFragmentDirections.actionTvShowsFragmentToLoginFragment(
-                        true
-                    )
+        viewModel.logOutState.observe(
+            viewLifecycleOwner,
+            {
+                handleResponse(
+                    response = it,
+                    successAction = {
+                        sharedPreferences.edit().clear().apply()
+                        findNavController().navigate(
+                            TvShowsFragmentDirections.actionTvShowsFragmentToLoginFragment(
+                                true
+                            )
+                        )
+                    }
                 )
-            })
-        })
+            }
+        )
     }
 
     private fun setNetworkStateCallbacks() {
         val request = NetworkRequest.Builder().build()
-        connectivityManager.getConnectivityManager().registerNetworkCallback(request,
+        connectivityManager.getConnectivityManager().registerNetworkCallback(
+            request,
             object : ConnectivityManager.NetworkCallback() {
                 override fun onLost(network: Network) {
                     super.onLost(network)
@@ -160,7 +169,8 @@ class TvShowsFragment : Fragment(),
                         }
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun <T : Any> handleResponse(response: WorkState<T>, successAction: (T) -> Unit) {
@@ -229,5 +239,4 @@ class TvShowsFragment : Fragment(),
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.tvShowConstrain, message, Snackbar.LENGTH_SHORT).show()
     }
-
 }

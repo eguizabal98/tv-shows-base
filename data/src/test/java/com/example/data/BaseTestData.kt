@@ -6,7 +6,6 @@ import com.example.data.di.configureNetworkModuleForTest
 import com.example.data.di.databaseTestModule
 import com.example.data.di.mockWebServerTest
 import com.example.data.di.repositoryModule
-import com.google.gson.Gson
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
