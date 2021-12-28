@@ -1,6 +1,9 @@
 package com.example.tvshowsbase.showslist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.example.domain.interactors.account.LogOutUseCase
 import com.example.domain.interactors.favorite.RefreshFavoritesUseCase

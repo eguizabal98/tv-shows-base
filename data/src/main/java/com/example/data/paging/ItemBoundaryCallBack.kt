@@ -6,8 +6,15 @@ import com.example.data.database.DataBase
 import com.example.data.database.entities.TVShowEntity
 import com.example.data.network.api.TvShowsAPI
 import com.example.data.network.models.showslist.TvShowsResult
-import com.example.domain.model.*
-import com.example.domain.model.FilterType.*
+import com.example.domain.model.Error
+import com.example.domain.model.FilterType
+import com.example.domain.model.FilterType.AIRING_TODAY
+import com.example.domain.model.FilterType.ON_AIR
+import com.example.domain.model.FilterType.POPULAR
+import com.example.domain.model.FilterType.TOP_RATE
+import com.example.domain.model.InternalErrorCodes
+import com.example.domain.model.RequestResult
+import com.example.domain.model.TvShow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

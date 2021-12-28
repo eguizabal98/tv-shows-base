@@ -1,6 +1,10 @@
 package com.example.data.di
 
-import com.example.data.network.api.*
+import com.example.data.network.api.AuthAPI
+import com.example.data.network.api.DetailsAPI
+import com.example.data.network.api.FavoritesAPI
+import com.example.data.network.api.SeasonsAPI
+import com.example.data.network.api.TvShowsAPI
 import com.example.data.util.Connectivity
 import com.example.data.util.ConnectivityImpl
 import kotlinx.coroutines.CoroutineScope

@@ -9,7 +9,6 @@ import com.example.domain.repository.AccountRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers.`is`
-import org.junit.Assert.*
 import org.junit.Test
 import org.koin.test.KoinTest
 import org.koin.test.inject

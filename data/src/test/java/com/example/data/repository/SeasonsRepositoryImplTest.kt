@@ -1,7 +1,9 @@
 package com.example.data.repository
 
 import androidx.lifecycle.LiveData
-import com.example.data.*
+import com.example.data.BaseTestData
+import com.example.data.mockSeason
+import com.example.data.mockShowId
 import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.RequestResult
@@ -10,8 +12,8 @@ import com.example.domain.repository.SeasonsRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-import org.junit.Assert.*
 import org.junit.Test
+import org.koin.core.component.inject
 import org.koin.test.inject
 import java.net.HttpURLConnection
 

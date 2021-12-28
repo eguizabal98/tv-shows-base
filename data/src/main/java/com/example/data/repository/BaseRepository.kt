@@ -4,10 +4,10 @@ import com.example.data.util.Connectivity
 import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.RequestResult
-import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.io.IOException
 
 abstract class BaseRepository(
     private val connectivity: Connectivity,

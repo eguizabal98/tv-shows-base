@@ -1,9 +1,13 @@
 package com.example.data.repository
 
-import com.example.data.*
+import com.example.data.BaseTestData
 import com.example.data.database.dao.AccountDao
 import com.example.data.database.dao.FavoriteShowDao
 import com.example.data.database.dao.TvShowDao
+import com.example.data.mockProfile
+import com.example.data.mockSessionId
+import com.example.data.mockToken
+import com.example.data.mockaccountId
 import com.example.data.util.mapToProfileDomain
 import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes

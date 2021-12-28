@@ -10,7 +10,11 @@ import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetDetailsUseCase
 import com.example.domain.interactors.favorite.GetFavoritesUseCase
 import com.example.domain.interactors.favorite.PutFavoriteUseCase
-import com.example.domain.model.*
+import com.example.domain.model.Cast
+import com.example.domain.model.RequestResult
+import com.example.domain.model.ShowDetails
+import com.example.domain.model.TvShow
+import com.example.domain.model.WorkState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

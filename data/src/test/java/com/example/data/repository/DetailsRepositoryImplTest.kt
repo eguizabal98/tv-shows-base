@@ -1,14 +1,20 @@
 package com.example.data.repository
 
 import androidx.lifecycle.LiveData
-import com.example.data.*
-import com.example.domain.model.*
+import com.example.data.BaseTestData
+import com.example.data.mockCast
+import com.example.data.mockDetail
+import com.example.data.mockShowId
+import com.example.domain.model.Cast
+import com.example.domain.model.InternalErrorCodes
+import com.example.domain.model.RequestResult
+import com.example.domain.model.ShowDetails
 import com.example.domain.repository.DetailsRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-import org.junit.Assert.*
 import org.junit.Test
+import org.koin.core.component.inject
 import org.koin.test.inject
 import java.net.HttpURLConnection
 

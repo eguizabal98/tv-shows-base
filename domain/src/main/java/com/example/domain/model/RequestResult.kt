@@ -3,7 +3,6 @@ package com.example.domain.model
 sealed class RequestResult<out T> {
     data class Success<out R>(val value: R) : RequestResult<R>()
     data class Failure(val error: Error) : RequestResult<Nothing>()
-    object Loading : RequestResult<Nothing>()
 }
 
 class Error(val throwable: Throwable?, val errorCode: InternalErrorCodes)

@@ -1,9 +1,18 @@
 package com.example.data.util
 
-import com.example.data.database.entities.*
+import com.example.data.database.entities.AccountEntity
+import com.example.data.database.entities.FavoriteShowEntity
+import com.example.data.database.entities.SeasonEntity
+import com.example.data.database.entities.ShowDetailEntity
+import com.example.data.database.entities.TVShowEntity
 import com.example.data.network.models.showsdetail.CastResponse
 import com.example.data.network.models.showsdetail.EpisodeResponse
-import com.example.domain.model.*
+import com.example.domain.model.Cast
+import com.example.domain.model.Episode
+import com.example.domain.model.Profile
+import com.example.domain.model.Season
+import com.example.domain.model.ShowDetails
+import com.example.domain.model.TvShow
 
 const val NOT_AVAILABLE = "Not Available"
 
