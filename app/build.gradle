@@ -24,6 +24,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "pref_name", PROD_PREF_NAME
+        }
+        debug {
+            buildConfigField "String", "pref_name", DEV_PREF_NAME
         }
     }
     compileOptions {
@@ -84,6 +88,8 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:2.40.5"
     kapt "com.google.dagger:hilt-android-compiler:2.40.5"
+
+    implementation "androidx.security:security-crypto:1.1.0-alpha03"
 }
 
 kapt {

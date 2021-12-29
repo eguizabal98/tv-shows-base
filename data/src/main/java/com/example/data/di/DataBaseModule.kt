@@ -11,6 +11,7 @@ import com.example.data.database.dao.SeasonDao
 import com.example.data.database.dao.TvShowDao
 import com.example.data.network.api.TvShowsAPI
 import com.example.data.paging.ItemBoundaryCallBack
+import com.example.data.secure.KeyManagerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,7 @@ object DataBaseModule {
     fun provideDataBase(@ApplicationContext context: Context): DataBase =
         Room.databaseBuilder(context, DataBase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
+            .openHelperFactory(KeyManagerRepository(context).getCypherFactory())
             .build()
 
     @Provides
