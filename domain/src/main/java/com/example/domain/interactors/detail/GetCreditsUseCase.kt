@@ -1,8 +1,9 @@
 package com.example.domain.interactors.detail
 
-import androidx.lifecycle.LiveData
 import com.example.domain.model.Cast
+import com.example.domain.model.RequestResult
+import kotlinx.coroutines.flow.Flow
 
 interface GetCreditsUseCase {
-    suspend fun getCredits(showId: Int): LiveData<List<Cast>>
+    fun getCredits(showId: Int): Flow<RequestResult<List<Cast>?>>
 }

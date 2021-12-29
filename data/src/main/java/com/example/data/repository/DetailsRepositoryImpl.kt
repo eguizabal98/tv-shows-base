@@ -1,7 +1,5 @@
 package com.example.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.database.dao.CreditsDao
 import com.example.data.database.dao.DetailDao
 import com.example.data.network.api.DetailsAPI
@@ -40,23 +38,17 @@ class DetailsRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun fetchCredits(showId: Int): RequestResult<Boolean> {
-        return fetchData(
+    override fun getCreditsLocal(showId: Int): Flow<RequestResult<List<Cast>?>> {
+        return remoteCallWithLocalData(
             apiAction = {
                 detailsAPI.getCredits(tvId = showId)
             },
             dbAction = {
                 creditsDao.insert(it)
             },
-            returnAction = {
-                RequestResult.Success(true)
+            returnLocalData = {
+                creditsDao.getCreditsShows(showId)?.castItems?.mapToCastDomain()
             }
         )
-    }
-
-    override suspend fun getCreditsLocal(showId: Int): LiveData<List<Cast>> {
-        return Transformations.map(creditsDao.getCreditsShows(showId)) { credits ->
-            credits?.castItems?.mapToCastDomain()
-        }
     }
 }

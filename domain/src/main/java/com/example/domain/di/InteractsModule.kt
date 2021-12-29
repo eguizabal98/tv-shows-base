@@ -6,8 +6,6 @@ import com.example.domain.interactors.account.GetAccountUseCase
 import com.example.domain.interactors.account.GetAccountUseCaseImpl
 import com.example.domain.interactors.account.LogOutUseCase
 import com.example.domain.interactors.account.LogOutUseCaseImpl
-import com.example.domain.interactors.detail.FetchCastListUseCase
-import com.example.domain.interactors.detail.FetchCastListUseCaseImpl
 import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetCreditsUseCaseImpl
 import com.example.domain.interactors.detail.GetDetailsUseCase
@@ -79,11 +77,6 @@ object InteractsModule {
         SetInitialFilterImpl(showsRepository)
 
     // Details
-
-    @Provides
-    fun provideFetchCastListUseCase(detailsRepository: DetailsRepository): FetchCastListUseCase =
-        FetchCastListUseCaseImpl(detailsRepository)
-
     @Provides
     fun provideGetCreditsUseCase(detailsRepository: DetailsRepository): GetCreditsUseCase =
         GetCreditsUseCaseImpl(detailsRepository)

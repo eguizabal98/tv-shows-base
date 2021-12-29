@@ -60,7 +60,6 @@ class ShowDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel.getDetails(args.showId)
         viewModel.getCast(args.showId)
-        viewModel.fetchCast(args.showId)
 
         createViewObservers()
         createViewModelObservers()
@@ -177,7 +176,7 @@ class ShowDetailFragment : Fragment() {
                     if (noConnection) {
                         noConnection = true
                         viewModel.getDetails(args.showId)
-                        viewModel.fetchCast(args.showId)
+                        viewModel.getCast(args.showId)
                     }
                 }
             }

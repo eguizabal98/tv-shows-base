@@ -3,7 +3,6 @@ package com.example.tvshowsbase.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.domain.interactors.detail.FetchCastListUseCase
 import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetDetailsUseCase
 import com.example.domain.interactors.favorite.GetFavoritesUseCase
@@ -21,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShowDetailViewModel @Inject constructor(
-    private val fetchCastListUseCase: FetchCastListUseCase,
     private val putFavoriteUseCase: PutFavoriteUseCase,
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
@@ -43,7 +41,8 @@ class ShowDetailViewModel @Inject constructor(
     private val _showDetails = MutableLiveData<ShowDetails>()
     val showDetails: LiveData<ShowDetails> = _showDetails
 
-    lateinit var cast: LiveData<List<Cast>>
+    private val _cast = MutableLiveData<List<Cast>>()
+    val cast: LiveData<List<Cast>> = _cast
 
     init {
         checkFavorite()
@@ -66,23 +65,20 @@ class ShowDetailViewModel @Inject constructor(
         }
     }
 
-    fun fetchCast(showId: Int) {
-        viewModelScope.launch {
-            _castRequest.postValue(WorkState.Loading)
-            when (val result = fetchCastListUseCase.fetchCast(showId)) {
-                is RequestResult.Success -> {
-                    _castRequest.postValue(WorkState.Success(result.value))
-                }
-                is RequestResult.Failure -> {
-                    _castRequest.postValue(WorkState.Failure(result.error.errorCode))
-                }
-            }
-        }
-    }
-
     fun getCast(showId: Int) {
         viewModelScope.launch {
-            cast = getCreditsUseCase.getCredits(showId)
+            getCreditsUseCase.getCredits(showId).collect { requestResult ->
+                when (requestResult) {
+                    RequestResult.Loading -> addWork()
+                    is RequestResult.Success -> {
+                        removeWork()
+                        requestResult.value?.let {
+                            _cast.postValue(it)
+                        }
+                    }
+                    is RequestResult.Failure -> removeWork()
+                }
+            }
         }
     }
 
