@@ -27,7 +27,8 @@ class SeasonsFragment : Fragment() {
     private val args: SeasonsFragmentArgs by navArgs()
     private lateinit var adapter: SeasonAdapter
 
-    @Inject lateinit var connectivityManager: Connectivity
+    @Inject
+    lateinit var connectivityManager: Connectivity
     private var noConnection = false
 
     override fun onCreateView(
@@ -44,8 +45,7 @@ class SeasonsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getSeasons(args.showId)
-        viewModel.fetchSeasons(args.showId, args.seasons)
+        viewModel.getSeasons(args.showId, args.seasons)
 
         createViewModelObservers()
         setNetworkStateCallbacks()
@@ -84,7 +84,7 @@ class SeasonsFragment : Fragment() {
                     super.onAvailable(network)
                     if (noConnection) {
                         noConnection = true
-                        viewModel.fetchSeasons(args.showId, args.seasons)
+                        viewModel.getSeasons(args.showId, args.seasons)
                     }
                 }
             }

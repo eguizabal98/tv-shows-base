@@ -1,17 +1,16 @@
 package com.example.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.database.dao.SeasonDao
 import com.example.data.database.entities.SeasonEntity
 import com.example.data.network.api.SeasonsAPI
 import com.example.data.util.Connectivity
 import com.example.data.util.mapSeasonToRoom
-import com.example.data.util.mapSeasonToSeasonDomain
+import com.example.data.util.mapToSeasonDomain
 import com.example.domain.model.RequestResult
 import com.example.domain.model.Season
 import com.example.domain.repository.SeasonsRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SeasonsRepositoryImpl @Inject constructor(
@@ -23,8 +22,8 @@ class SeasonsRepositoryImpl @Inject constructor(
     SeasonsRepository,
     BaseRepository(connectivity, scope) {
 
-    override suspend fun fetchSeasons(showsId: Int, seasons: Int): RequestResult<Boolean> {
-        return fetchData(
+    override fun getSeasons(showsId: Int, seasons: Int): Flow<RequestResult<List<Season>?>> {
+        return remoteCallWithLocalData(
             apiAction = {
                 val seasonsList = arrayListOf<SeasonEntity>()
                 for (n in 1..seasons) {
@@ -38,16 +37,11 @@ class SeasonsRepositoryImpl @Inject constructor(
             dbAction = {
                 seasonDao.insert(it)
             },
-            returnAction = {
-                RequestResult.Success(true)
+            returnLocalData = {
+                seasonDao.getSeasons(showsId)?.map {
+                    it.mapToSeasonDomain()
+                }
             }
         )
-    }
-
-    override suspend fun getSeasons(showsId: Int): LiveData<List<Season>> {
-        val value = seasonDao.getSeasons(showsId)
-        return Transformations.map(value) { seasonEntityList ->
-            seasonEntityList.mapSeasonToSeasonDomain()
-        }
     }
 }

@@ -98,6 +98,15 @@ fun List<SeasonEntity>.mapSeasonToSeasonDomain(): List<Season> = map {
     )
 }
 
+fun SeasonEntity.mapToSeasonDomain(): Season =
+    Season(
+        airDate ?: "",
+        name ?: "",
+        posterPath,
+        seasonNumber,
+        episodes?.mapEpisodeToEpisodeDomain()
+    )
+
 fun SeasonEntity.mapSeasonToRoom(showId: Int): SeasonEntity =
     SeasonEntity(
         seasonId,

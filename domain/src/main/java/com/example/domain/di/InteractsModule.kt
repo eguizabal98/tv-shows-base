@@ -22,8 +22,6 @@ import com.example.domain.interactors.login.GetAuthTokenUseCase
 import com.example.domain.interactors.login.GetAuthTokenUseCaseImpl
 import com.example.domain.interactors.login.GetSessionIdUseCase
 import com.example.domain.interactors.login.GetSessionIdUseCaseImpl
-import com.example.domain.interactors.season.FetchSeasonsUseCase
-import com.example.domain.interactors.season.FetchSeasonsUseCaseImpl
 import com.example.domain.interactors.season.GetSeasonUseCase
 import com.example.domain.interactors.season.GetSeasonUseCaseImpl
 import com.example.domain.interactors.showlist.ChangeFilterUseCase
@@ -99,9 +97,6 @@ object InteractsModule {
         GetFavoritesUseCaseImpl(favoritesRepository)
 
     // Seasons
-    @Provides
-    fun provideFetchSeasonsUseCase(seasonsRepository: SeasonsRepository): FetchSeasonsUseCase =
-        FetchSeasonsUseCaseImpl(seasonsRepository)
 
     @Provides
     fun provideGetSeasonUseCase(seasonsRepository: SeasonsRepository): GetSeasonUseCase =
