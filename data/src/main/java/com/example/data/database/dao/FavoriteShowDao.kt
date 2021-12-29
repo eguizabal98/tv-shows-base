@@ -1,16 +1,16 @@
 package com.example.data.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.data.database.entities.FavoriteShowEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteShowDao {
     @Query("SELECT * FROM favorites_table")
-    fun getFavoritesShows(): LiveData<List<FavoriteShowEntity>>
+    fun getFavoritesShows(): Flow<List<FavoriteShowEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(data: List<FavoriteShowEntity>)

@@ -1,8 +1,8 @@
 package com.example.domain.interactors.favorite
 
-import androidx.lifecycle.LiveData
 import com.example.domain.model.TvShow
+import kotlinx.coroutines.flow.Flow
 
 interface GetFavoritesUseCase {
-    suspend fun getFavoriteShows(): LiveData<List<TvShow>>
+    fun getFavoriteShows(): Flow<List<TvShow>>
 }

@@ -3,6 +3,7 @@ package com.example.tvshowsbase.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.account.FetchAccountUseCase
 import com.example.domain.interactors.account.GetAccountUseCase
@@ -62,7 +63,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getFavorites() {
         viewModelScope.launch {
-            favoriteResult = getFavoritesUseCase.getFavoriteShows()
+            favoriteResult = getFavoritesUseCase.getFavoriteShows().asLiveData()
         }
     }
 }

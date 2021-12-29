@@ -1,8 +1,8 @@
 package com.example.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.domain.model.RequestResult
 import com.example.domain.model.TvShow
+import kotlinx.coroutines.flow.Flow
 
 interface FavoritesRepository {
     suspend fun refreshFavoritesShows(
@@ -10,7 +10,7 @@ interface FavoritesRepository {
         sessionId: String,
         page: Int
     ): RequestResult<Boolean>
-    suspend fun getFavoritesShows(): LiveData<List<TvShow>>
+    fun getFavoritesShows(): Flow<List<TvShow>>
     suspend fun putShowFavorite(
         favorite: Boolean,
         showId: Int,

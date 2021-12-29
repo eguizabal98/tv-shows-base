@@ -1,7 +1,5 @@
 package com.example.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.database.dao.FavoriteShowDao
 import com.example.data.network.api.FavoritesAPI
 import com.example.data.network.models.showsdetail.FavoriteRequestBody
@@ -11,6 +9,8 @@ import com.example.domain.model.RequestResult
 import com.example.domain.model.TvShow
 import com.example.domain.repository.FavoritesRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FavoritesRepositoryImpl @Inject constructor(
@@ -38,9 +38,10 @@ class FavoritesRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getFavoritesShows(): LiveData<List<TvShow>> {
-        val value = favoriteShowDao.getFavoritesShows()
-        return Transformations.map(value) { it.mapFavoriteToShowDomain() }
+    override fun getFavoritesShows(): Flow<List<TvShow>> {
+        return favoriteShowDao.getFavoritesShows().map {
+            it.mapFavoriteToShowDomain()
+        }
     }
 
     override suspend fun putShowFavorite(

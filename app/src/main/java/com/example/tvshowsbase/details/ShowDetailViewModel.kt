@@ -2,6 +2,7 @@ package com.example.tvshowsbase.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetDetailsUseCase
@@ -106,7 +107,7 @@ class ShowDetailViewModel @Inject constructor(
 
     private fun checkFavorite() {
         viewModelScope.launch {
-            favoriteResult = getFavoritesUseCase.getFavoriteShows()
+            favoriteResult = getFavoritesUseCase.getFavoriteShows().asLiveData()
         }
     }
 }
