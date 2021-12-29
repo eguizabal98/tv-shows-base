@@ -2,10 +2,8 @@ package com.example.tvshowsbase.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactors.detail.FetchCastListUseCase
-import com.example.domain.interactors.detail.FetchDetailsUseCase
 import com.example.domain.interactors.detail.GetCreditsUseCase
 import com.example.domain.interactors.detail.GetDetailsUseCase
 import com.example.domain.interactors.favorite.GetFavoritesUseCase
@@ -15,20 +13,20 @@ import com.example.domain.model.RequestResult
 import com.example.domain.model.ShowDetails
 import com.example.domain.model.TvShow
 import com.example.domain.model.WorkState
+import com.example.tvshowsbase.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShowDetailViewModel @Inject constructor(
-    private val fetchDetailsUseCase: FetchDetailsUseCase,
     private val fetchCastListUseCase: FetchCastListUseCase,
     private val putFavoriteUseCase: PutFavoriteUseCase,
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getDetailsUseCase: GetDetailsUseCase
-) :
-    ViewModel() {
+) : BaseViewModel() {
 
     private val _favoriteRequest = MutableLiveData<WorkState<Boolean>>()
     val favoriteRequest: LiveData<WorkState<Boolean>>
@@ -38,15 +36,12 @@ class ShowDetailViewModel @Inject constructor(
 
     var favoriteState = false
 
-    private val _detailsRequest = MutableLiveData<WorkState<Boolean>>()
-    val detailsRequest: LiveData<WorkState<Boolean>>
-        get() = _detailsRequest
-
     private val _castRequest = MutableLiveData<WorkState<Boolean>>()
     val castRequest: LiveData<WorkState<Boolean>>
         get() = _castRequest
 
-    lateinit var details: LiveData<ShowDetails>
+    private val _showDetails = MutableLiveData<ShowDetails>()
+    val showDetails: LiveData<ShowDetails> = _showDetails
 
     lateinit var cast: LiveData<List<Cast>>
 
@@ -54,23 +49,20 @@ class ShowDetailViewModel @Inject constructor(
         checkFavorite()
     }
 
-    fun fetchDetails(showId: Int) {
-        viewModelScope.launch {
-            _detailsRequest.postValue(WorkState.Loading)
-            when (val result = fetchDetailsUseCase.getShowDetails(showId)) {
-                is RequestResult.Success -> {
-                    _detailsRequest.postValue(WorkState.Success(result.value))
-                }
-                is RequestResult.Failure -> {
-                    _detailsRequest.postValue(WorkState.Failure(result.error.errorCode))
-                }
-            }
-        }
-    }
-
     fun getDetails(showId: Int) {
         viewModelScope.launch {
-            details = getDetailsUseCase.getDetails(showId)
+            getDetailsUseCase.getDetails(showId).collect { requestResult ->
+                when (requestResult) {
+                    RequestResult.Loading -> addWork()
+                    is RequestResult.Success -> {
+                        removeWork()
+                        requestResult.value?.let {
+                            _showDetails.postValue(it)
+                        }
+                    }
+                    is RequestResult.Failure -> removeWork()
+                }
+            }
         }
     }
 
@@ -96,7 +88,7 @@ class ShowDetailViewModel @Inject constructor(
 
     fun putFavorite(sessionId: String, accountId: Int) {
         viewModelScope.launch {
-            details.value?.let { showDetails ->
+            _showDetails.value?.let { showDetails ->
                 _favoriteRequest.postValue(WorkState.Loading)
                 val response = putFavoriteUseCase.putShowFavorite(
                     !favoriteState,

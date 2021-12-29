@@ -14,6 +14,7 @@ import com.example.domain.model.RequestResult
 import com.example.domain.model.ShowDetails
 import com.example.domain.repository.DetailsRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DetailsRepositoryImpl @Inject constructor(
@@ -25,24 +26,18 @@ class DetailsRepositoryImpl @Inject constructor(
 ) :
     DetailsRepository, BaseRepository(connectivity, scope) {
 
-    override suspend fun fetchDetails(showId: Int): RequestResult<Boolean> {
-        return fetchData(
+    override fun getDetailsLocal(showId: Int): Flow<RequestResult<ShowDetails?>> {
+        return remoteCallWithLocalData(
             apiAction = {
                 detailsAPI.getShowDetails(tvId = showId)
             },
             dbAction = {
                 detailDao.insert(it.checkNull())
             },
-            returnAction = {
-                RequestResult.Success(true)
+            returnLocalData = {
+                detailDao.getDetailsShows(showId)?.mapToShowDetailsDomain()
             }
         )
-    }
-
-    override suspend fun getDetailsLocal(showId: Int): LiveData<ShowDetails> {
-        return Transformations.map(detailDao.getDetailsShows(showId)) { detailEntity ->
-            detailEntity?.mapToShowDetailsDomain()
-        }
     }
 
     override suspend fun fetchCredits(showId: Int): RequestResult<Boolean> {

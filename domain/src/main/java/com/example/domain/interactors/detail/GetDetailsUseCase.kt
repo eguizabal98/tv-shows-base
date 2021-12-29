@@ -1,8 +1,9 @@
 package com.example.domain.interactors.detail
 
-import androidx.lifecycle.LiveData
+import com.example.domain.model.RequestResult
 import com.example.domain.model.ShowDetails
+import kotlinx.coroutines.flow.Flow
 
 interface GetDetailsUseCase {
-    suspend fun getDetails(showId: Int): LiveData<ShowDetails>
+    fun getDetails(showId: Int): Flow<RequestResult<ShowDetails?>>
 }

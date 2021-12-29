@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class GetDetailsUseCaseImpl @Inject constructor(private val detailsRepository: DetailsRepository) :
     GetDetailsUseCase {
-    override suspend fun getDetails(showId: Int) = detailsRepository.getDetailsLocal(showId)
+    override fun getDetails(showId: Int) = detailsRepository.getDetailsLocal(showId)
 }

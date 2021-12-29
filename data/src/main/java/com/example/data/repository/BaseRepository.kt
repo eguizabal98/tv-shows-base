@@ -5,6 +5,9 @@ import com.example.domain.model.Error
 import com.example.domain.model.InternalErrorCodes
 import com.example.domain.model.RequestResult
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -33,6 +36,25 @@ abstract class BaseRepository(
             withContext(scope.coroutineContext) {
                 returnAction()
             }
+        }
+    }
+
+    protected fun <T, R, U> remoteCallWithLocalData(
+        apiAction: suspend () -> T,
+        dbAction: suspend (T) -> R,
+        returnLocalData: suspend () -> U
+    ): Flow<RequestResult<U>> {
+        return flow {
+            emit(RequestResult.Loading)
+            if (connectivity.hasNetworkAccess()) {
+                val response = apiAction()
+                dbAction(response)
+                emit(RequestResult.Success(returnLocalData()))
+            } else {
+                emit(RequestResult.Success(returnLocalData()))
+            }
+        }.catch { e ->
+            emit(exceptionHandler(Exception(e)))
         }
     }
 

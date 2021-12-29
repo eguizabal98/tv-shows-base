@@ -59,7 +59,6 @@ class ShowDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.getDetails(args.showId)
-        viewModel.fetchDetails(args.showId)
         viewModel.getCast(args.showId)
         viewModel.fetchCast(args.showId)
 
@@ -76,8 +75,8 @@ class ShowDetailFragment : Fragment() {
         }
 
         binding.allSeasonButton.setOnClickListener {
-            val showId: Int? = viewModel.details.value?.showId
-            val seasons: Int? = viewModel.details.value?.lastSeason?.seasonNumber
+            val showId: Int? = viewModel.showDetails.value?.showId
+            val seasons: Int? = viewModel.showDetails.value?.lastSeason?.seasonNumber
             if (showId != null && seasons != null) {
                 findNavController().navigate(
                     ShowDetailFragmentDirections.actionShowDetailFragmentToSeasonsFragment(
@@ -92,7 +91,7 @@ class ShowDetailFragment : Fragment() {
     }
 
     private fun createViewModelObservers() {
-        viewModel.details.observe(
+        viewModel.showDetails.observe(
             viewLifecycleOwner,
             {
                 it?.let {
@@ -111,15 +110,6 @@ class ShowDetailFragment : Fragment() {
                         binding.emptyCast.visibility = View.VISIBLE
                     }
                 }
-            }
-        )
-
-        viewModel.detailsRequest.observe(
-            viewLifecycleOwner,
-            { response ->
-                handleResponse(
-                    response = response, successAction = { favCheckObserver() }
-                )
             }
         )
 
@@ -153,7 +143,7 @@ class ShowDetailFragment : Fragment() {
         val listShow = viewModel.favoriteResult.value
         var condition = false
         listShow?.forEach {
-            if (it.showId == viewModel.details.value?.showId) {
+            if (it.showId == viewModel.showDetails.value?.showId) {
                 condition = true
             }
         }
@@ -186,7 +176,7 @@ class ShowDetailFragment : Fragment() {
                     super.onAvailable(network)
                     if (noConnection) {
                         noConnection = true
-                        viewModel.fetchDetails(args.showId)
+                        viewModel.getDetails(args.showId)
                         viewModel.fetchCast(args.showId)
                     }
                 }
