@@ -15,7 +15,7 @@ class KeyManagerRepository(private val context: Context) {
     private val keyLength = 256
     private val algorithm = "HmacSHA256"
 
-    private fun getPassphrase(): ByteArray {
+    fun getPassphrase(): ByteArray {
         val file = File(context.filesDir, fileName)
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()

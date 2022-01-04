@@ -19,8 +19,8 @@ import com.example.data.database.entities.TVShowEntity
 @TypeConverters(MyTypeConverters::class)
 @Database(
     entities = [TVShowEntity::class, FavoriteShowEntity::class, AccountEntity::class, ShowDetailEntity::class, CreditsEntity::class, SeasonEntity::class],
-    version = 9,
-    exportSchema = false
+    version = 10,
+    exportSchema = true
 )
 abstract class DataBase : RoomDatabase() {
     abstract fun tvShowDao(): TvShowDao

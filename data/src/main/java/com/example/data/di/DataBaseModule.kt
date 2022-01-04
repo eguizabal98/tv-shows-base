@@ -3,6 +3,7 @@ package com.example.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.data.database.DataBase
+import com.example.data.database.SQLCipherUtils
 import com.example.data.database.dao.AccountDao
 import com.example.data.database.dao.CreditsDao
 import com.example.data.database.dao.DetailDao
@@ -29,11 +30,28 @@ object DataBaseModule {
 
     @Singleton
     @Provides
-    fun provideDataBase(@ApplicationContext context: Context): DataBase =
-        Room.databaseBuilder(context, DataBase::class.java, DB_NAME)
+    fun provideDataBase(@ApplicationContext context: Context): DataBase {
+        val state = SQLCipherUtils.getDatabaseState(
+            context,
+            DB_NAME
+        )
+
+        val key = KeyManagerRepository(context).getPassphrase()
+
+        if (state == SQLCipherUtils.State.UNENCRYPTED) {
+
+            SQLCipherUtils.encrypt(
+                context,
+                DB_NAME,
+                key
+            )
+        }
+
+        return Room.databaseBuilder(context, DataBase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
             .openHelperFactory(KeyManagerRepository(context).getCypherFactory())
             .build()
+    }
 
     @Provides
     fun provideTvShowDao(dataBase: DataBase): TvShowDao = dataBase.tvShowDao()
